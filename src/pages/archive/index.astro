@@ -1,13 +1,13 @@
 ---
-import BaseHead from '../components/BaseHead.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
-import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+import BaseHead from '../../components/BaseHead.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { SITE_TITLE, SITE_DESCRIPTION } from '../../consts';
 import { getCollection } from 'astro:content';
+import FormattedDate from '../../components/FormattedDate.astro';
 
 const posts = (await getCollection('posts'))
-    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-    .slice(0, 10);
+    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 ---
 
 <!doctype html>
@@ -18,9 +18,6 @@ const posts = (await getCollection('posts'))
 	<body>
 		<Header />
 		<main>
-			<p>
-                Hi all, I'm John McBride.
-            </p>
             <div class="posts">
                 {posts.map(post => (
                     <div class="post-row">
@@ -33,7 +30,7 @@ const posts = (await getCollection('posts'))
                     </div>
                 ))}
             </div>
-        </main>
+		</main>
 		<Footer />
 	</body>
 </html>

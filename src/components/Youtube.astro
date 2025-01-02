@@ -1,0 +1,46 @@
+---
+// Inspired by: https://github.com/delucis/astro-embed/blob/main/packages/astro-embed-youtube/YouTube.astro
+// MIT licensed
+// Sha: https://github.com/delucis/astro-embed/commit/a97b51bbeba66f94aea8bfc07f115c1f201aa4ef
+//
+// Requires a "videoId" which is the "v=XYZ" value in the youtube.com query params
+// Requires lite-youtube-embed to be installed: npm i lite-youtube-embed
+
+import 'lite-youtube-embed/src/lite-yt-embed.css';
+
+export interface Props extends astroHTML.JSX.HTMLAttributes {
+	videoId: string;
+}
+
+const {
+	videoId,
+	title,
+	...attrs
+} = Astro.props as Props;
+
+const href = `https://youtube.com/watch?v=${videoId}`;
+---
+
+<lite-youtube
+	{videoId}
+	{title}
+	data-title={title}
+	{...attrs}
+>
+	<a {href} class="lty-playbtn">
+		<span class="lyt-visually-hidden">Play</span>
+	</a>
+</lite-youtube>
+
+<script src="lite-youtube-embed"></script>
+
+<style is:global>
+	lite-youtube > iframe {
+		all: unset !important;
+		width: 100% !important;
+		height: 100% !important;
+		position: absolute !important;
+		inset: 0 !important;
+		border: 0 !important;
+	}
+</style>

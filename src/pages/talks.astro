@@ -1,0 +1,171 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import Footer from "../components/Footer.astro";
+import Header from "../components/Header.astro";
+import Youtube from "../components/Youtube.astro";
+
+interface Talk {
+   year: number;
+   title: string;
+   event: string;
+   abstract?: string;
+   youtubeVideoId?: string;
+}
+
+const talks: Talk[] = [
+   {
+       year: 2024,
+       event: "Kubecon NA",
+       title: "Building Massive-Scale Generative AI Services with Kubernetes and Open Source",
+       abstract: "meow!",
+       youtubeVideoId: "wYzsPNfMF7A"
+   },
+   {
+       year: 2023,
+       event: "Kubecon NA",
+       title: "Hacking the Kubernetes Secure Software Supply-chain with .zip Domains",
+       abstract: "meow!"
+   },
+   {
+       year: 2023,
+       event: "Neovim Conf",
+       title: "Introducing nvim-llama",
+       abstract: "meow!"
+   },
+   {
+       year: 2023,
+       event: "PancakesCon 4",
+       title: "Containers, Hardening Against Escapes, and Funk Bass",
+       abstract: "meow!"
+   },
+];
+
+const groupedTalks = talks.reduce((acc, talk) => {
+   (acc[talk.year] = acc[talk.year] || []).push(talk);
+   return acc;
+}, {} as Record<number, Talk[]>);
+---
+
+<html lang="en">
+   <head>
+       <BaseHead title="Talks" description="Talks by John McBride" />
+   </head>
+
+   <body>
+       <Header />
+       <main>
+           <ul>
+               <li>
+               Speaking inquiries: <a href="mailto:talks@johncodes.com">talks@johncodes.com</a>
+               </li>
+               <li>
+                <!--Probably better to have embedded here ...-->
+               <a href="https://github.com/jpmcb/talks">Bio and high quality headshots for events can be found here.</a>
+               </li>
+            </ul>
+
+            {Object.entries(groupedTalks)
+                .sort(([yearA], [yearB]) => Number(yearB) - Number(yearA))
+                .map(([year, yearTalks]) => (
+                    <div class="year-group">
+                        <h2>{year}</h2>
+                        <div class="talks">
+                            {yearTalks.map(talk => (
+                                <details class="talk">
+                                    <summary>
+                                        <div class="event">{talk.event}</div>
+                                        <div class="title">{talk.title}</div>
+                                    </summary>
+                                    {talk.abstract && (
+                                        <div class="abstract">
+                                            {talk.abstract}
+                                        </div>
+                                    )}
+                                    {talk.youtubeVideoId && (
+                                        <div class="video">
+                                            <Youtube videoId={talk.youtubeVideoId} />
+                                        </div>
+                                    )}
+                                </details>
+                            ))}
+                        </div>
+                    </div>
+                ))
+            }
+        </main>
+        <Footer />
+    </body>
+</html>
+
+<style>
+    .contact {
+        margin-bottom: 2em;
+        font-size: 0.9em;
+        color: var(--text-secondary);
+    }
+    
+    .year-group {
+        margin-bottom: 2em;
+    }
+    
+    .year-group h2 {
+        font-size: 1.5em;
+        margin-bottom: 0.5em;
+    }
+    
+    .talks {
+        display: flex;
+        flex-direction: column;
+        gap: 1em;
+    }
+    
+    .talk {
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        transition: all 0.2s ease;
+    }
+    
+    .talk:hover {
+        border-color: var(--accent);
+    }
+    
+    .talk summary {
+        padding: 1em;
+        cursor: pointer;
+        list-style: none;
+    }
+    
+    .talk summary::-webkit-details-marker {
+        display: none;
+    }
+    
+    .event {
+        font-size: 0.9em;
+        color: var(--text-secondary);
+        margin-bottom: 0.25em;
+    }
+    
+    .title {
+        font-weight: 500;
+        line-height: 1.4;
+    }
+    
+    .abstract {
+        padding: 1em;
+        padding-top: 0;
+        color: var(--text-secondary);
+        font-size: 0.95em;
+        line-height: 1.6;
+    }
+    
+    .youtube {
+        display: block;
+        padding: 0 1em 1em;
+        font-size: 0.85em;
+        color: var(--accent);
+    }
+    
+    .youtube:hover {
+        text-decoration: underline;
+    }
+</style>
