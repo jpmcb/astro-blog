@@ -2,6 +2,7 @@
 import BaseHead from '../../components/BaseHead.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
+import Search from '../../components/Search.astro';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../../consts';
 import { getCollection } from 'astro:content';
 import FormattedDate from '../../components/FormattedDate.astro';
@@ -17,7 +18,8 @@ const posts = (await getCollection('posts'))
 	</head>
 	<body>
 		<Header />
-		<main>
+        <main>
+            <Search />
             <div class="posts">
                 {posts.map(post => (
                     <div class="post-row">
@@ -36,9 +38,6 @@ const posts = (await getCollection('posts'))
 </html>
 
 <style>
-    .posts {
-        margin-top: 2em;
-    }
     .post-row {
         display: flex;
         justify-content: space-between;

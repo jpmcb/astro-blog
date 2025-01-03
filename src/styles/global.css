@@ -1,10 +1,10 @@
+/* Default, light theme colors */
 :root {
-    /* Light theme colors */
     --accent: #2337ff;
     --accent-dark: #000d8a;
     --background: #ffffff;
     --background-gradient-from: rgba(229, 233, 240, 0.5);
-    --text-main: #1a1a1a;
+    --text-main: #1e1e1e;
     --text-secondary: #4a5568;
     --card-background: #ffffff;
     --code-background: #f4f4f4;
@@ -20,12 +20,19 @@
   --background: #0f172a;
   --background-gradient-from: rgba(17, 24, 39, 0.5);
   --text-main: #e2e8f0;
-  --text-secondary: #cbd5e1;
+  --text-secondary: #cbd5e9;
   --card-background: #1e293b;
   --code-background: #282c34;
   --code-text: #e2e8f0;
   --border: #334155;
   --link: var(--accent);
+
+  /* for Pagefind dark mode transition */
+  --pagefind-ui-primary: #eeeeee;
+  --pagefind-ui-text: #eeeeee;
+  --pagefind-ui-background: #152028;
+  --pagefind-ui-border: #152028;
+  --pagefind-ui-tag: #152028;
 }
 
 /* registers the Berkeley Mono, custom nerd fonts from included compiled woff */
@@ -121,7 +128,7 @@ blockquote {
   border-left: 4px solid var(--accent);
   padding: 0 0 0 20px;
   margin: 0px;
-  font-size: 1.333em;
+  /*font-size: 1.333em;*/
   color: var(--text-secondary);
 }
 

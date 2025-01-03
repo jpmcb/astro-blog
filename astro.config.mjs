@@ -7,7 +7,7 @@ export default defineConfig({
     site: 'https://example.com',
     integrations: [
         sitemap(),
-        mdx()
+        mdx(),
     ],
     markdown: {
         shikiConfig: {

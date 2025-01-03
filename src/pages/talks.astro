@@ -1,49 +1,19 @@
 ---
+import { getCollection } from "astro:content";
 import BaseHead from "../components/BaseHead.astro";
 import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
 import Youtube from "../components/Youtube.astro";
+import type { CollectionEntry, render } from "astro:content";
+import Talk from "../components/Talk.astro";
 
-interface Talk {
-   year: number;
-   title: string;
-   event: string;
-   abstract?: string;
-   youtubeVideoId?: string;
-}
-
-const talks: Talk[] = [
-   {
-       year: 2024,
-       event: "Kubecon NA",
-       title: "Building Massive-Scale Generative AI Services with Kubernetes and Open Source",
-       abstract: "meow!",
-       youtubeVideoId: "wYzsPNfMF7A"
-   },
-   {
-       year: 2023,
-       event: "Kubecon NA",
-       title: "Hacking the Kubernetes Secure Software Supply-chain with .zip Domains",
-       abstract: "meow!"
-   },
-   {
-       year: 2023,
-       event: "Neovim Conf",
-       title: "Introducing nvim-llama",
-       abstract: "meow!"
-   },
-   {
-       year: 2023,
-       event: "PancakesCon 4",
-       title: "Containers, Hardening Against Escapes, and Funk Bass",
-       abstract: "meow!"
-   },
-];
+const talks = (await getCollection('talks'))
+    .sort((a, b) => b.data.year - a.data.year)
 
 const groupedTalks = talks.reduce((acc, talk) => {
-   (acc[talk.year] = acc[talk.year] || []).push(talk);
+   (acc[talk.data.year] = acc[talk.data.year] || []).push(talk);
    return acc;
-}, {} as Record<number, Talk[]>);
+}, {} as Record<number, CollectionEntry<'talks'>[]>);
 ---
 
 <html lang="en">
@@ -56,7 +26,7 @@ const groupedTalks = talks.reduce((acc, talk) => {
        <main>
            <ul>
                <li>
-               Speaking inquiries: <a href="mailto:talks@johncodes.com">talks@johncodes.com</a>
+               Speaking inquiries: <a href="mailto:hello.john.codes@gmail.com">hello.john.codes@gmail.com</a>
                </li>
                <li>
                 <!--Probably better to have embedded here ...-->
@@ -70,24 +40,23 @@ const groupedTalks = talks.reduce((acc, talk) => {
                     <div class="year-group">
                         <h2>{year}</h2>
                         <div class="talks">
-                            {yearTalks.map(talk => (
+                            {yearTalks.map(talk => {
+                                return (
                                 <details class="talk">
                                     <summary>
-                                        <div class="event">{talk.event}</div>
-                                        <div class="title">{talk.title}</div>
+                                        <div class="event">{talk.data.event}</div>
+                                        <div class="title">{talk.data.title}</div>
                                     </summary>
-                                    {talk.abstract && (
-                                        <div class="abstract">
-                                            {talk.abstract}
-                                        </div>
-                                    )}
-                                    {talk.youtubeVideoId && (
+                                    <div class="abstract">
+                                        <Talk talk={talk} />
+                                    </div>
+                                    {talk.data.youtubeVideoId && (
                                         <div class="video">
-                                            <Youtube videoId={talk.youtubeVideoId} />
+                                            <Youtube videoId={talk.data.youtubeVideoId} />
                                         </div>
                                     )}
                                 </details>
-                            ))}
+                            )})}
                         </div>
                     </div>
                 ))

@@ -8,12 +8,24 @@ const posts = defineCollection({
 	// Type-check frontmatter using a schema
 	schema: z.object({
 		title: z.string(),
-		description: z.string(),
-		// Transform string to Date object
+		description: z.string().optional(),
+    isPopular: z.boolean().optional(),
+    isFav: z.boolean().optional(),
 		pubDate: z.coerce.date(),
 		updatedDate: z.coerce.date().optional(),
 		heroImage: z.string().optional(),
 	}),
 });
 
-export const collections = { posts };
+const talks = defineCollection({
+	loader: glob({ base: './src/content/talks', pattern: '**/*.{md,mdx}' }),
+
+	schema: z.object({
+    year: z.number(),
+		title: z.string(),
+    event: z.string(),
+    youtubeVideoId: z.string().optional(),
+	}),
+});
+
+export const collections = { posts, talks };

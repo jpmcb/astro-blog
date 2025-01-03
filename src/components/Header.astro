@@ -10,11 +10,10 @@ import ThemeIcon from './ThemeIcon.astro';
 			<h2><a href="/">{SITE_TITLE}</a></h2>
 		</div>
 		<div class="right">
-			<HeaderLink href="/">Home</HeaderLink>
 			<HeaderLink href="/archive">Archive</HeaderLink>
 			<HeaderLink href="/talks">Talks</HeaderLink>
 			<HeaderLink href="/about">About</HeaderLink>
-			<HeaderLink href="/public-keys.txt">Public keys</HeaderLink>
+			<!--<HeaderLink href="/public-keys.txt">Public keys</HeaderLink>-->
 			<ThemeIcon />
 		</div>
 	</nav>
@@ -60,14 +59,5 @@ import ThemeIcon from './ThemeIcon.astro';
     }
     nav a.active {
         color: var(--accent);
-    }
-    /* Add this to prevent layout shift */
-    nav a::after {
-      display: block;
-      content: attr(href);
-      font-weight: 600;
-      height: 0;
-      overflow: hidden;
-      visibility: hidden;
     }
 </style>

@@ -1,0 +1,13 @@
+---
+---
+
+<link href="/pagefind/pagefind-ui.css" rel="stylesheet">
+<script is:inline src="/pagefind/pagefind-ui.js"></script>
+
+<div id="search"></div>
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        // @ts-ignore
+        new PagefindUI({ element: "#search", showSubResults: true, autofocus: true });
+    });
+</script>
