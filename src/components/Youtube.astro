@@ -35,12 +35,7 @@ const href = `https://youtube.com/watch?v=${videoId}`;
 <script src="lite-youtube-embed"></script>
 
 <style is:global>
-	lite-youtube > iframe {
-		all: unset !important;
-		width: 100% !important;
-		height: 100% !important;
-		position: absolute !important;
-		inset: 0 !important;
-		border: 0 !important;
-	}
+    lite-youtube {
+        max-width: none !important;
+    }
 </style>

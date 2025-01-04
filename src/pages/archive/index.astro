@@ -5,7 +5,7 @@ import Footer from '../../components/Footer.astro';
 import Search from '../../components/Search.astro';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../../consts';
 import { getCollection } from 'astro:content';
-import FormattedDate from '../../components/FormattedDate.astro';
+import '../../styles/post-rows.css';
 
 const posts = (await getCollection('posts'))
     .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
@@ -20,6 +20,7 @@ const posts = (await getCollection('posts'))
 		<Header />
         <main>
             <Search />
+            <div class="search-divider post-row" />
             <div class="posts">
                 {posts.map(post => (
                     <div class="post-row">
@@ -38,21 +39,7 @@ const posts = (await getCollection('posts'))
 </html>
 
 <style>
-    .post-row {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0.5em 0;
-        border-bottom: 1px solid var(--border);
-    }
-    .date {
-        color: var(--text-secondary);
-        font-size: 0.9em;
-    }
-    a {
-        text-decoration: none;
-    }
-    a:hover {
-        text-decoration: underline;
+    .search-divider {
+        margin-bottom: 20px;
     }
 </style>

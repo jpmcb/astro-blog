@@ -4,6 +4,7 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 import { getCollection } from 'astro:content';
+import "../styles/post-rows.css";
 
 const latestPosts = (await getCollection('posts'))
     .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
@@ -28,6 +29,18 @@ const favPosts = (await getCollection('posts'))
 	<body>
 		<Header />
         <main>
+            <p>
+                Hello! I'm John McBride. I'm an engineering VP at The Linux Foundation
+                where I'm building our AI and backend infrastructure for the LFX platform.
+            </p>
+
+            <p>
+            On this site, you can find posts I've written, abstracts and videos for talks I've given,
+            and more. These days, I mostly hang out on <a href="https://bsky.app/profile/johncodes.com">Bluesky</a>.
+            </p>
+
+            </br>
+
             <div class="title-posts">
                 <h3>
                     Latest posts
@@ -86,26 +99,3 @@ const favPosts = (await getCollection('posts'))
 		<Footer />
 	</body>
 </html>
-
-<style>
-    .title-posts {
-        margin-bottom: 2.1em;
-    }
-    .post-row {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0.5em 0;
-        border-bottom: 1px solid var(--border);
-    }
-    .date {
-        color: var(--text-secondary);
-        font-size: 0.9em;
-    }
-    a {
-        text-decoration: none;
-    }
-    a:hover {
-        text-decoration: underline;
-    }
-</style>

@@ -1,7 +1,7 @@
 ---
 import HeaderLink from './HeaderLink.astro';
 import { SITE_TITLE } from '../consts';
-import ThemeIcon from './ThemeIcon.astro';
+import ThemeIcon from './icons/ThemeIcon.astro';
 ---
 
 <header>
@@ -27,9 +27,11 @@ import ThemeIcon from './ThemeIcon.astro';
         border-bottom: 1px solid var(--border);
     }
     nav {
-        max-width: 720px;
+        width: 100%;
+        max-width: 800px;
         margin: 0 auto;
-        padding: 0 1em;
+        padding: 18px;
+        box-sizing: border-box;
         display: flex;
         align-items: center;
         justify-content: space-between;
