@@ -8,6 +8,7 @@ import { getCollection } from 'astro:content';
 import '../../styles/post-rows.css';
 
 const posts = (await getCollection('posts'))
+    .filter(post => !post.data.isDraft)
     .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 ---
 

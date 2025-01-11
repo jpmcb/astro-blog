@@ -12,6 +12,7 @@ const posts = defineCollection({
     isPopular: z.boolean().optional(),
     isFav: z.boolean().optional(),
 		pubDate: z.coerce.date(),
+    isDraft: z.boolean().optional(),
 		updatedDate: z.coerce.date().optional(),
 		heroImage: z.string().optional(),
 	}),

@@ -7,15 +7,18 @@ import { getCollection } from 'astro:content';
 import "../styles/post-rows.css";
 
 const latestPosts = (await getCollection('posts'))
+    .filter(post => !post.data.isDraft)
     .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
     .slice(0, 10);
 
 const popularPosts = (await getCollection('posts'))
+    .filter(post => !post.data.isDraft)
     .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
     .filter((post) => post.data.isPopular)
     .slice(0, 10);
 
 const favPosts = (await getCollection('posts'))
+    .filter(post => !post.data.isDraft)
     .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
     .filter((post) => post.data.isFav)
     .slice(0, 10);

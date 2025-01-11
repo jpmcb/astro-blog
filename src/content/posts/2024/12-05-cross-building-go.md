@@ -1,6 +1,7 @@
 ---
 title: "building cross platform Go with \"just\""
 pubDate: 2024-12-05
+isDraft: true
 ---
 
 Often, when building Go based CLI tools, you want to target a cross-compatible
