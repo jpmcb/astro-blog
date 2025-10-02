@@ -9,19 +9,19 @@ import "../styles/post-rows.css";
 const latestPosts = (await getCollection('posts'))
     .filter(post => !post.data.isDraft)
     .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-    .slice(0, 10);
+    .slice(0, 5);
 
 const popularPosts = (await getCollection('posts'))
     .filter(post => !post.data.isDraft)
     .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
     .filter((post) => post.data.isPopular)
-    .slice(0, 10);
+    .slice(0, 5);
 
 const favPosts = (await getCollection('posts'))
     .filter(post => !post.data.isDraft)
     .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
     .filter((post) => post.data.isFav)
-    .slice(0, 10);
+    .slice(0, 5);
 ---
 
 <!doctype html>
@@ -32,22 +32,9 @@ const favPosts = (await getCollection('posts'))
 	<body>
 		<Header />
         <main>
-            <p>
-                Hello! I'm John McBride. I'm an engineering VP at The Linux Foundation
-                where I'm building our AI and backend infrastructure for the LFX platform.
-            </p>
-
-            <p>
-            On this site, you can find posts I've written, abstracts and videos for talks I've given,
-            and more. These days, I mostly hang out on <a href="https://bsky.app/profile/johncodes.com">Bluesky</a>.
-            Follow the RSS feed <a href="https://johncodes.com/rss.xml">here</a>.
-            </p>
-
-            </br>
-
             <div class="title-posts">
                 <h3>
-                    Latest posts
+                    latest
                 </h3>
                 <div class="posts">
                     {latestPosts.map(post => (
@@ -66,7 +53,7 @@ const favPosts = (await getCollection('posts'))
 
             <div class="title-posts">
                 <h3>
-                    Popular posts
+                    popular posts
                 </h3>
                 <div class="posts">
                     {popularPosts.map(post => (
@@ -84,7 +71,7 @@ const favPosts = (await getCollection('posts'))
 
             <div class="title-posts">
                 <h3>
-                    My favorite posts
+                    my favorites
                 </h3>
                 <div class="posts">
                     {favPosts.map(post => (

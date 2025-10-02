@@ -24,15 +24,14 @@ const groupedTalks = talks.reduce((acc, talk) => {
    <body>
        <Header />
        <main>
-           <ul>
-               <li>
-               Speaking inquiries: <a href="mailto:hello.john.codes@gmail.com">hello.john.codes@gmail.com</a>
-               </li>
-               <li>
-                <!--Probably better to have embedded here ...-->
-               <a href="https://github.com/jpmcb/talks">Bio and high quality headshots for events can be found here.</a>
-               </li>
-            </ul>
+               <p>
+               - speaking inquiries: <a href="mailto:hello.john.codes@gmail.com">hello.john.codes@gmail.com</a>
+               </br>
+               <!--Probably better to have embedded here ...-->
+               - <a href="https://github.com/jpmcb/talks">Bio and high quality headshots for events can be found here.</a>
+               </p>
+               <hr>
+               <br>
 
             {Object.entries(groupedTalks)
                 .sort(([yearA], [yearB]) => Number(yearB) - Number(yearA))
