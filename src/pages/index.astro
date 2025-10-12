@@ -1,27 +1,27 @@
 ---
-import BaseHead from '../components/BaseHead.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
-import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
-import { getCollection } from 'astro:content';
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+import { getCollection } from "astro:content";
 import "../styles/post-rows.css";
 
-const latestPosts = (await getCollection('posts'))
-    .filter(post => !post.data.isDraft)
-    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-    .slice(0, 5);
+const latestPosts = (await getCollection("posts"))
+	.filter((post) => !post.data.isDraft)
+	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+	.slice(0, 5);
 
-const popularPosts = (await getCollection('posts'))
-    .filter(post => !post.data.isDraft)
-    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-    .filter((post) => post.data.isPopular)
-    .slice(0, 5);
+const popularPosts = (await getCollection("posts"))
+	.filter((post) => !post.data.isDraft)
+	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+	.filter((post) => post.data.isPopular)
+	.slice(0, 5);
 
-const favPosts = (await getCollection('posts'))
-    .filter(post => !post.data.isDraft)
-    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-    .filter((post) => post.data.isFav)
-    .slice(0, 5);
+const favPosts = (await getCollection("posts"))
+	.filter((post) => !post.data.isDraft)
+	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+	.filter((post) => post.data.isFav)
+	.slice(0, 5);
 ---
 
 <!doctype html>

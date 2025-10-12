@@ -1,88 +1,96 @@
 /* Default, light theme colors */
 :root {
-    --accent: #2337ff;
-    --accent-dark: #000d8a;
-    --background: #ffffff;
-    --background-gradient-from: rgba(229, 233, 240, 0.5);
-    --text-main: #1e1e1e;
-    --text-secondary: #4a5568;
-    --card-background: #ffffff;
-    --code-background: #f4f4f4;
-    --code-text: #1a1a1a;
-    --border: #e2e8f0;
-    --link: var(--accent);
+	--accent: #2337ff;
+	--accent-dark: #000d8a;
+	--background: #ffffff;
+	--background-gradient-from: rgba(229, 233, 240, 0.5);
+	--text-main: #1e1e1e;
+	--text-secondary: #4a5568;
+	--card-background: #ffffff;
+	--code-background: #f4f4f4;
+	--code-text: #1a1a1a;
+	--border: #e2e8f0;
+	--link: var(--accent);
 }
 
 /* Dark theme colors */
 :root.dark {
-  --accent: #60a5fa;
-  --accent-dark: #3b82f6;
-  --background: #0f172a;
-  --background-gradient-from: rgba(17, 24, 39, 0.5);
-  --text-main: #e2e8f0;
-  --text-secondary: #cbd5e9;
-  --card-background: #1e293b;
-  --code-background: #282c34;
-  --code-text: #e2e8f0;
-  --border: #334155;
-  --link: var(--accent);
+	--accent: #60a5fa;
+	--accent-dark: #3b82f6;
+	--background: #0f172a;
+	--background-gradient-from: rgba(17, 24, 39, 0.5);
+	--text-main: #e2e8f0;
+	--text-secondary: #cbd5e9;
+	--card-background: #1e293b;
+	--code-background: #282c34;
+	--code-text: #e2e8f0;
+	--border: #334155;
+	--link: var(--accent);
 
-  /* for Pagefind dark mode transition */
-  --pagefind-ui-primary: #eeeeee;
-  --pagefind-ui-text: #eeeeee;
-  --pagefind-ui-background: #152028;
-  --pagefind-ui-border: #152028;
-  --pagefind-ui-tag: #152028;
+	/* for Pagefind dark mode transition */
+	--pagefind-ui-primary: #eeeeee;
+	--pagefind-ui-text: #eeeeee;
+	--pagefind-ui-background: #152028;
+	--pagefind-ui-border: #152028;
+	--pagefind-ui-tag: #152028;
 }
 
 /* registers the Berkeley Mono, custom nerd fonts from included compiled woff */
 @font-face {
-  font-family: 'Berkeley Mono';
-  src: url('/fonts/BerkeleyMonoNerdFont-Regular.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
+	font-family: "Berkeley Mono";
+	src: url("/fonts/BerkeleyMonoNerdFont-Regular.woff") format("woff");
+	font-weight: normal;
+	font-style: normal;
+	font-display: swap;
 }
 
 html {
-  width: 100%;
-  overflow-x: hidden;
-  scrollbar-gutter: stable;
+	width: 100%;
+	overflow-x: hidden;
+	scrollbar-gutter: stable;
 }
 
 body {
-    font-family: 'Noto Sans Variable', sans-serif;
-    margin: 0;
-    padding: 0;
-    text-align: left;
-    background-color: var(--background);
-    background-image: linear-gradient(var(--background-gradient-from), var(--background));
-    background-size: 100% 600px;
-    background-repeat: no-repeat;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    color: var(--text-main);
-    font-size: 18px;
-    line-height: 1.6;
+	font-family: "Noto Sans Variable", sans-serif;
+	margin: 0;
+	padding: 0;
+	text-align: left;
+	background-color: var(--background);
+	background-image: linear-gradient(
+		var(--background-gradient-from),
+		var(--background)
+	);
+	background-size: 100% 600px;
+	background-repeat: no-repeat;
+	word-wrap: break-word;
+	overflow-wrap: break-word;
+	color: var(--text-main);
+	font-size: 18px;
+	line-height: 1.6;
 }
 
 main {
-    width: 100%;
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 18px;
-    box-sizing: border-box;
+	width: 100%;
+	max-width: 800px;
+	margin: 0 auto;
+	padding: 18px;
+	box-sizing: border-box;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  margin: 0 0 0.5rem 0;
-  color: var(--text-main);
-  line-height: 1.2;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	margin: 0 0 0.5rem 0;
+	color: var(--text-main);
+	line-height: 1.2;
 }
 
 a {
-  color: var(--link);
-  text-decoration: none;
+	color: var(--link);
+	text-decoration: none;
 }
 
 a:hover {
@@ -99,56 +107,56 @@ img {
 	border-radius: 8px;
 }
 
-:not(pre) > code: {
-    font-family: 'Berkeley Mono';
+:not(pre) > code {
+	font-family: "Berkeley Mono";
 }
 
 .astro-code {
-    font-family: 'Berkeley Mono';
+	font-family: "Berkeley Mono";
 	font-size: 0.85em;
-    letter-spacing: 0.5px;
-    padding: 20px 15px;
-    border-radius: 8px;
-    line-height: 23px;
+	letter-spacing: 0.5px;
+	padding: 20px 15px;
+	border-radius: 8px;
+	line-height: 23px;
 }
 
 pre {
-  padding: 1.5em;
-  border-radius: 8px;
-  background-color: var(--code-background);
-  color: var(--code-text);
+	padding: 1.5em;
+	border-radius: 8px;
+	background-color: var(--code-background);
+	color: var(--code-text);
 }
 
 /* Need this ? */
 
 /*pre > code {*/
-	/*all: unset;*/
+/*all: unset;*/
 /*}*/
 
 blockquote {
-  border-left: 4px solid var(--accent);
-  padding: 0 0 0 20px;
-  margin: 0px;
-  /*font-size: 1.333em;*/
-  color: var(--text-secondary);
+	border-left: 4px solid var(--accent);
+	padding: 0 0 0 20px;
+	margin: 0px;
+	/*font-size: 1.333em;*/
+	color: var(--text-secondary);
 }
 
 hr {
-  border: none;
-  border-top: 1px solid var(--border);
+	border: none;
+	border-top: 1px solid var(--border);
 }
 
 /* Update theme toggle colors */
-.dark #themeToggle .sun { 
-  fill: transparent; 
+.dark #themeToggle .sun {
+	fill: transparent;
 }
-.dark #themeToggle .moon { 
-  fill: var(--text-main); 
+.dark #themeToggle .moon {
+	fill: var(--text-main);
 }
 
-#themeToggle .sun { 
-  fill: var(--text-main); 
+#themeToggle .sun {
+	fill: var(--text-main);
 }
-#themeToggle .moon { 
-  fill: transparent; 
+#themeToggle .moon {
+	fill: transparent;
 }

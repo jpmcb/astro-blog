@@ -7,13 +7,17 @@ import Youtube from "../components/Youtube.astro";
 import type { CollectionEntry } from "astro:content";
 import Talk from "../components/Talk.astro";
 
-const talks = (await getCollection('talks'))
-    .sort((a, b) => b.data.year - a.data.year)
+const talks = (await getCollection("talks")).sort(
+	(a, b) => b.data.year - a.data.year,
+);
 
-const groupedTalks = talks.reduce((acc, talk) => {
-   (acc[talk.data.year] = acc[talk.data.year] || []).push(talk);
-   return acc;
-}, {} as Record<number, CollectionEntry<'talks'>[]>);
+const groupedTalks = talks.reduce(
+	(acc, talk) => {
+		(acc[talk.data.year] = acc[talk.data.year] || []).push(talk);
+		return acc;
+	},
+	{} as Record<number, CollectionEntry<"talks">[]>,
+);
 ---
 
 <html lang="en">

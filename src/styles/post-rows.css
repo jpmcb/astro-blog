@@ -1,38 +1,38 @@
 .title-posts {
-    margin-bottom: 2.1em;
+	margin-bottom: 2.1em;
 }
 .post-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    padding: 0.8em 0;
-    border-bottom: 1px solid var(--border);
-    gap: 1em; /* Add space between title and date */
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+	padding: 0.8em 0;
+	border-bottom: 1px solid var(--border);
+	gap: 1em; /* Add space between title and date */
 }
 .date {
-    color: var(--text-secondary);
-    font-size: 0.9em;
-    white-space: nowrap; /* Prevent date from wrapping */
+	color: var(--text-secondary);
+	font-size: 0.9em;
+	white-space: nowrap; /* Prevent date from wrapping */
 }
 a {
-    text-decoration: none;
-    /* Prevent very long titles from breaking layout */
-    overflow-wrap: break-word;
-    word-wrap: break-word;
-    hyphens: auto;
+	text-decoration: none;
+	/* Prevent very long titles from breaking layout */
+	overflow-wrap: break-word;
+	word-wrap: break-word;
+	hyphens: auto;
 }
 a:hover {
-    text-decoration: underline;
+	text-decoration: underline;
 }
 
 /* Mobile styles */
 @media (max-width: 600px) {
-    .post-row {
-        flex-direction: column;
-        gap: 0.3em; /* Reduce gap between title and date when stacked */
-        padding: 0.6em 0; /* Slightly reduce padding on mobile */
-    }
-    .date {
-        font-size: 0.85em; /* Slightly smaller date on mobile */
-    }
+	.post-row {
+		flex-direction: column;
+		gap: 0.3em; /* Reduce gap between title and date when stacked */
+		padding: 0.6em 0; /* Slightly reduce padding on mobile */
+	}
+	.date {
+		font-size: 0.85em; /* Slightly smaller date on mobile */
+	}
 }

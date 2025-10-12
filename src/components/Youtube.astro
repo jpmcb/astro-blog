@@ -6,17 +6,13 @@
 // Requires a "videoId" which is the "v=XYZ" value in the youtube.com query params
 // Requires lite-youtube-embed to be installed: npm i lite-youtube-embed
 
-import 'lite-youtube-embed/src/lite-yt-embed.css';
+import "lite-youtube-embed/src/lite-yt-embed.css";
 
 export interface Props extends astroHTML.JSX.HTMLAttributes {
 	videoId: string;
 }
 
-const {
-	videoId,
-	title,
-	...attrs
-} = Astro.props as Props;
+const { videoId, title, ...attrs } = Astro.props as Props;
 
 const href = `https://youtube.com/watch?v=${videoId}`;
 ---
