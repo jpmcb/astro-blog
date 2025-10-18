@@ -1,0 +1,310 @@
+---
+title: "How We Built the Pizza CLI Using Go and Cobra"
+pubDate: 2024-09-23
+---
+
+import Note from "../../../components/Note.astro";
+
+<Note>This post originally appeared on OpenSauced's blog.
+This post is preserved here in its entirety as the Linux Foundation acquired OpenSauced in late 2024</Note>
+
+Last week, the OpenSauced engineering team released the Pizza CLI, a powerful
+and composable command-line tool for generating CODEOWNER files and integrating
+with the OpenSauced platform. Building robust command-line tools may seem
+straightforward, but without careful planning and thoughtful paradigms, CLIs can
+quickly become tangled messes of code that are difficult to maintain and riddled
+with bugs. In this blog post, we'll take a deep dive into how we built this CLI
+using Go, how we organize our commands using Cobra, and how our lean engineering
+team iterates quickly to build powerful functionality.
+
+## Using Go and Cobra
+
+The Pizza CLI is a Go command-line tool that leverages several standard
+libraries. Go’s simplicity, speed, and systems programming focus make it an
+ideal choice for building CLIs. At its core, the Pizza-CLI uses spf13/cobra, a
+CLI bootstrapping library in Go, to organize and manage the entire tree of
+commands.
+
+You can think of Cobra as the scaffolding that makes a command-line interface
+itself work, enables all the flags to function consistently, and handles
+communicating to users via help messages and automated documentation.
+
+## Structuring the Codebase
+
+One of the first (and biggest) challenges when building a Cobra-based Go CLI is
+how to structure all your code and files. Contrary to popular belief, there is
+no prescribed way to do this in Go. Neither the go build command nor the gofmt
+utility will complain about how you name your packages or organize your
+directories. This is one of the best parts of Go: its simplicity and power make
+it easy to define structures that work for you and your engineering team!
+
+Ultimately, in my opinion, it's best to think of and structure a Cobra-based Go
+codebase as a tree of commands:
+
+```
+├── Root command
+│   ├── Child command
+│   ├── Child command
+│   │   └── Grandchild command
+```
+
+At the base of the tree is the root command: this is the anchor for your entire
+CLI application and will get the name of your CLI. Attached as child commands,
+you’ll have a tree of branching logic that informs the structure of how your
+entire CLI flow works.
+
+One of the things that’s incredibly easy to miss when building CLIs is the user
+experience. I typically recommend people follow a “root verb noun" paradigm when
+building commands and child-command structures since it flows logically and
+leads to excellent user experiences.
+
+For example, in Kubectl, you’ll see this paradigm everywhere: `kubectl get
+pods`, `kubectl apply …`, or `kubectl label pods …` This ensures a sensical flow
+to how users will interact with your command line application and helps a lot
+when talking about commands with other people.
+
+In the end, this structure and suggestion can inform how you organize your files
+and directories, but again, ultimately it’s up to you to determine how you
+structure your CLI and present the flow to end-users.
+
+In the Pizza CLI, we have a well defined structure where child commands (and
+subsequent grandchildren of those child commands) live. Under the cmd directory
+in their own packages, each command gets its own implementation. The root
+command scaffolding exists in a pkg/utils directory since it's useful to think
+of the root command as a top level utility used by main.go, rather than a
+command that might need a lot of maintenance. Typically, in your root command Go
+implementation, you’ll have a lot of boilerplate setting things up that you
+won’t touch much so it’s nice to get that stuff out of the way.
+
+Here's a simplified view of our directory structure:
+
+```
+├── main.go
+├── pkg/
+│   ├── utils/
+│   │   └── root.go
+├── cmd/
+│   ├── Child command dir
+│   ├── Child command dir
+│   │   └── Grandchild command dir
+```
+
+This structure allows for clear separation of concerns and makes it easier to
+maintain and extend the CLI as it grows and as we add more commands.
+
+## Using `go-git`
+
+One of the main libraries we use in the Pizza-CLI is the go-git library, a pure
+git implementation in Go that is highly extensible. During CODEOWNERS
+generation, this library enables us to iterate the git ref log, look at code
+diffs, and determine which git authors are associated with the configured
+attributions defined by a user.
+
+Iterating the git ref log of a local git repo is actually pretty simple:
+
+```go
+// 1. Open the local git repository
+repo, err := git.PlainOpen("/path/to/your/repo")
+if err != nil {
+    	panic("could not open git repository")
+}
+
+// 2. Get the HEAD reference for the local git repo
+head, err := repo.Head()
+if err != nil {
+    	panic("could not get repo head")
+}
+
+// 3. Create a git ref log iterator based on some options
+commitIter, err := repo.Log(&git.LogOptions{
+    	From:  head.Hash(),
+})
+if err != nil {
+    	panic("could not get repo log iterator")
+}
+
+defer commitIter.Close()
+
+// 4. Iterate through the commit history
+err = commitIter.ForEach(func(commit *object.Commit) error {
+    	// process each commit as the iterator iterates them
+    	return nil
+})
+if err != nil {
+    	panic("could not process commit iterator")
+}
+```
+
+If you’re building a Git based application, I definitely recommend using go-git:
+it’s fast, integrates well within the Go ecosystem, and can be used to do all
+sorts of things!
+
+## Integrating Posthog telemetry
+
+Our engineering and product team is deeply invested in bringing the best
+possible command line experience to our end users: this means we’ve taken steps
+to integrate anonymized telemetry that can report to Posthog on usage and errors
+out in the wild. This has allowed us to fix the most important bugs first,
+iterate quickly on popular feature requests, and understand how our users are
+using the CLI.
+
+Posthog has a first party library in Go that supports this exact functionality.
+First, we define a Posthog client:
+
+```go
+import "github.com/posthog/posthog-go"
+
+// PosthogCliClient is a wrapper around the posthog-go client
+// and is used as an API entrypoint for sending OpenSauced
+// telemetry data for CLI commands
+type PosthogCliClient struct {
+	// client is the Posthog Go client
+	client posthog.Client
+
+	// activated denotes if the user has enabled or disabled telemetry
+	activated bool
+
+	// uniqueID is the user's unique, anonymous identifier
+	uniqueID string
+}
+```
+
+Then, after initializing a new client, we can use it through the various struct
+methods we’ve defined. For example, when logging into the OpenSauced platform,
+we capture specific information on a successful login:
+
+```go
+// CaptureLogin gathers telemetry on users who log into OpenSauced
+// via the CLI
+func (p *PosthogCliClient) CaptureLogin(username string) error {
+	if p.activated {
+    	return p.client.Enqueue(posthog.Capture{
+        	DistinctId: username,
+        	Event:  	"pizza_cli_user_logged_in",
+    	})
+	}
+
+	return nil
+}
+```
+
+During command execution, the various “capture" functions get called to capture
+error paths, happy paths, etc.
+
+For the anonymized IDs, we use Google’s excellent UUID Go library:
+
+```go
+newUUID := uuid.New().String()
+```
+
+These UUIDs get stored locally on end users machines as JSON under their home
+directory: ~/.pizza-cli/telemtry.json. This gives the end user complete
+authority and autonomy to delete this telemetry data if they want (or disable
+telemetry altogether through configuration options!) to ensure they’re staying
+anonymous when using the CLI.
+
+## Iterative Development and Testing
+
+Our lean engineering team follows an iterative development process, focusing on
+delivering small, testable features rapidly. Typically, we do this through
+GitHub issues, pull requests, milestones, and projects. We use Go's built-in
+testing framework extensively, writing unit tests for individual functions and
+integration tests for entire commands.
+
+Unfortunately, Go’s standard testing library doesn’t have great assertion
+functionality out of the box. It’s easy enough to use “==" or other operands,
+but most of the time, when going back and reading through tests, it’s nice to be
+able to eyeball what’s going on with assertions like “assert.Equal" or
+“assert.Nil".
+
+We’ve integrated the excellent testify library with its “assert" functionality
+to allow for smoother test implementation:
+
+```go
+config, _, err := LoadConfig(nonExistentPath)
+require.Error(t, err)
+assert.Nil(t, config)
+```
+
+## Using `just`
+
+We heavily use Just at OpenSauced, a command runner utility, much like GNU’s
+“make", for easily executing small scripts. This has enabled us to quickly
+onramp new team members or community members to our Go ecosystem since building
+and testing is as simple as “just build" or “just test"!
+
+For example, to create a simple build utility in Just, within a justfile, we can
+have:
+
+```make
+build:
+  go build main.go -o build/pizza
+```
+
+Which will build a Go binary into the build/ directory. Now, building locally is
+as simple as executing a “just" command.
+
+But we’ve been able to integrate more functionality into using Just and have
+made it a cornerstone of how our entire build, test, and development framework
+is executed. For example, to build a binary for the local architecture with
+injected build time variables (like the sha the binary was built against, the
+version, the date time, etc.), we can use the local environment and run extra
+steps in the script before executing the “go build":
+
+```make
+build:
+    #!/usr/bin/env sh
+  echo "Building for local arch"
+
+  export VERSION="${RELEASE_TAG_VERSION:-dev}"
+  export DATETIME=$(date -u +"%Y-%m-%d-%H:%M:%S")
+  export SHA=$(git rev-parse HEAD)
+
+  go build \
+	-ldflags="-s -w \
+	-X 'github.com/open-sauced/pizza-cli/pkg/utils.Version=${VERSION}' \
+	-X 'github.com/open-sauced/pizza-cli/pkg/utils.Sha=${SHA}' \
+	-X 'github.com/open-sauced/pizza-cli/pkg/utils.Datetime=${DATETIME}' \
+	-X 'github.com/open-sauced/pizza-cli/pkg/utils.writeOnlyPublicPosthogKey=${POSTHOG_PUBLIC_API_KEY}'" \
+	-o build/pizza
+```
+
+We’ve even extended this to enable cross architecture and OS build: Go uses the
+GOARCH and GOOS env vars to know which CPU architecture and operating system to
+build against. To build other variants, we can create specific Just commands for
+that:
+
+```make
+# Builds for Darwin linux (i.e., MacOS) on arm64 architecture (i.e. Apple silicon)
+build-darwin-arm64:
+  #!/usr/bin/env sh
+
+  echo "Building darwin arm64"
+
+  export VERSION="${RELEASE_TAG_VERSION:-dev}"
+  export DATETIME=$(date -u +"%Y-%m-%d-%H:%M:%S")
+  export SHA=$(git rev-parse HEAD)
+  export CGO_ENABLED=0
+  export GOOS="darwin"
+  export GOARCH="arm64"
+
+  go build \
+	-ldflags="-s -w \
+	-X 'github.com/open-sauced/pizza-cli/pkg/utils.Version=${VERSION}' \
+	-X 'github.com/open-sauced/pizza-cli/pkg/utils.Sha=${SHA}' \
+	-X 'github.com/open-sauced/pizza-cli/pkg/utils.Datetime=${DATETIME}' \
+	-X 'github.com/open-sauced/pizza-cli/pkg/utils.writeOnlyPublicPosthogKey=${POSTHOG_PUBLIC_API_KEY}'" \
+	-o build/pizza-${GOOS}-${GOARCH}
+```
+
+## Conclusion
+
+Building the Pizza CLI using Go and Cobra has been an exciting journey and we’re
+thrilled to share it with you. The combination of Go's performance and
+simplicity with Cobra's powerful command structuring has allowed us to create a
+tool that's not only robust and powerful, but also user-friendly and
+maintainable.
+
+We invite you to explore the Pizza CLI GitHub repository, try out the tool, and
+let us know your thoughts. Your feedback and contributions are invaluable as we
+work to make code ownership management easier for development teams everywhere!

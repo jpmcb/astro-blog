@@ -134,6 +134,7 @@ CGO_ENABLED=0 go build -gcflags="-N" -a main.go
 ```
 
 This instructs the Go toolchain (which includes a `gc` compiler) to do the following:
+
 - Disable `gc` optimizations with `-N`: we don't want the underlying compiler to make
   any changes to our meta code through compiler trickery.
 - Disable `cgo` from require a locally linkable C toolchain: I.e., this builds a sole, statically linked binary.
@@ -405,7 +406,7 @@ the way up to 64 bit wide ints.
 Besides how absolutely _huge_ the source file would be
 (the difference between the max 32 bit int and max 64 bit int
 is roughly 4 billion times the size: so we can assume the
-source file would be 400 GB * 4 billion == 16 million petabytes).
+source file would be 400 GB \* 4 billion == 16 million petabytes).
 I found there was a tricky soft limit on ints in bash:
 
 ```bash

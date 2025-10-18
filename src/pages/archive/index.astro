@@ -8,39 +8,43 @@ import { getCollection } from "astro:content";
 import "../../styles/post-rows.css";
 
 const posts = (await getCollection("posts"))
-	.filter((post) => !post.data.isDraft)
-	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+  .filter((post) => !post.data.isDraft)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 ---
 
 <!doctype html>
 <html lang="en">
-	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-	</head>
-	<body>
-		<Header />
-        <main>
-            <Search />
-            <div class="search-divider post-row" />
-            <div class="posts">
-                {posts.map(post => (
-                    <div class="post-row">
-                        <a href={`/archive/${post.id}/`}>{post.data.title}</a>
-                        <span class="date">{post.data.pubDate.toLocaleDateString('en-us', {
-                            year: 'numeric',
-                            month: 'short',
-                            day: 'numeric',
-                        })}</span>
-                    </div>
-                ))}
+  <head>
+    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+  </head>
+  <body>
+    <Header />
+    <main>
+      <Search />
+      <div class="search-divider post-row"></div>
+      <div class="posts">
+        {
+          posts.map((post) => (
+            <div class="post-row">
+              <a href={`/archive/${post.id}/`}>{post.data.title}</a>
+              <span class="date">
+                {post.data.pubDate.toLocaleDateString("en-us", {
+                  year: "numeric",
+                  month: "short",
+                  day: "numeric",
+                })}
+              </span>
             </div>
-		</main>
-		<Footer />
-	</body>
+          ))
+        }
+      </div>
+    </main>
+    <Footer />
+  </body>
 </html>
 
 <style>
-    .search-divider {
-        margin-bottom: 20px;
-    }
+  .search-divider {
+    margin-bottom: 20px;
+  }
 </style>

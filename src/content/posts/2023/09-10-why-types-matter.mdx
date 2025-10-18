@@ -3,7 +3,7 @@ title: "Why types in programming languages matter."
 pubDate: 2023-09-10
 ---
 
-import Youtube from "../../../components/Youtube.astro"
+import Youtube from "../../../components/Youtube.astro";
 
 Loosely typed programming languages have been around for a very, very long time.
 And they’ve been the center of many problems for about as long.
@@ -86,7 +86,7 @@ similar example of these dangerous assumptions is the classic C buffer overflow:
 int main() {
     // A character buffer array of only 10 chars
     char buffer[10];
-		
+
     // A null terminated string array
     // (notice it's abit longer than 10 chars)
     char message[] = "Hello, World!";
@@ -138,9 +138,9 @@ Let’s look at a JavaScript example now:
 
 ```js
 function printchars(str) {
-    for(let i = 0; i < str.length; i++) {
-        console.log(str[i]);
-    }
+  for (let i = 0; i < str.length; i++) {
+    console.log(str[i]);
+  }
 }
 
 // Yikes! This is the wrong type and should have been a string!!!
@@ -148,10 +148,10 @@ function printchars(str) {
 // Thanks to type coercion in js, this will inevitably become "12345"
 // and adopt the "length" property and not throw an error.
 //
-// But the real question remains: 
+// But the real question remains:
 // what was the intent here? Why did the caller assume they could use
 // a number here? What confusion occurred? Or maybe they embraced the
-// type coercion and forced the function to print a string 
+// type coercion and forced the function to print a string
 // of their number. Which in itself is confusing and abit obtuse.
 let myData = 12345;
 

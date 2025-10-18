@@ -71,7 +71,7 @@ While, admittedly, this was a fairly unconventional way to ask for support, it
 was a heartfelt attempt by the author to find financial means for a project he
 believed was worth all his time. Many in the JavaScript community did not
 [respond well](https://github.com/zloirock/core-js/issues/548).
-So much so that 
+So much so that
 _“the author of some library is looking for a good job”_
 [sort of became a meme unto itself](https://github.com/zloirock/core-js/issues/708).
 
@@ -163,7 +163,7 @@ not start selling licenses for it? Or somehow turn it into a product.
 I find this unlikely. If Denis, a Russian national, commercialized the library
 over night, it would essentially have the same effect as deleting it: core-js is
 used by thousands of large businesses around the world, and if they suddenly had
-a Russian corporate dependency 
+a Russian corporate dependency
 ([where there are currently many sanctions, including against “advanced technologies”](https://www.state.gov/the-impact-of-sanctions-and-export-controls-on-the-russian-federation/)),
 this would force drastic action to
 remove core-js from any and all front end dependencies. More likely than not,
@@ -304,9 +304,9 @@ complex, very popular software library, that few other people understand, his
 claims are a troubling reality. In the worst case, he could easily embed a
 malicious piece of code deep in the commit log and publish a new package to NPM
 for his financial gain. But more realistically, I worry for his safety; someone
-    with crushing debt who presides over an incredibly valuable technological
-    resource with little oversight is a prime target for state-sponsored hacker
-    groups.
+with crushing debt who presides over an incredibly valuable technological
+resource with little oversight is a prime target for state-sponsored hacker
+groups.
 
 Ironically, to this day, many well respected security and supply-chain companies
 would call core-js “healthy”. Snyk, a developer security platform company,
@@ -329,45 +329,45 @@ maintainer and their own software stability.
 _“This all sounds bad. What do I do?”_ Here are my recommendations for consumers
 of core-js:
 
-* Make a financial contribution - To start with, show Denis your support for the
-solo work he’s done on core-js and the incredible functionality he’s brought to
-the web. It’s the least we, as a software ecosystem, can do.
+- Make a financial contribution - To start with, show Denis your support for the
+  solo work he’s done on core-js and the incredible functionality he’s brought to
+  the web. It’s the least we, as a software ecosystem, can do.
 
-* Pin your core-js dependency - While not a long term solution, pinning your
-dependency will keep you from consuming potentially malicious upstream changes
-that get made to new versions of core-js. Generally, it’s not a great idea to
-blindly take every new package or track “latest”. You should attempt to
-independently verify critical projects and packages you consume, pinning to the
-ones that pass your screening.
+- Pin your core-js dependency - While not a long term solution, pinning your
+  dependency will keep you from consuming potentially malicious upstream changes
+  that get made to new versions of core-js. Generally, it’s not a great idea to
+  blindly take every new package or track “latest”. You should attempt to
+  independently verify critical projects and packages you consume, pinning to the
+  ones that pass your screening.
 
-* Cache versions of core-js you do rely on - In general, it is a mistake to
-blindly take dependencies from upstream package registries. In other words, you
-should never install an NPM package directly to your production environment. You
-may find yourself in a “left-pad” situation where a module owner one day decides
-to remove that package from the face of the earth. Or worse, where the package
-owner publishes a new malicious package under the same version that flows down
-to consumers. Those packages should, instead, be installed through a cache that
-you and your security team have independently created, validated, and control.
-Yes, this is another service you’d be running internally, but it’s well worth
-the cost in order to mitigate an entire class of supply chain attacks.
+- Cache versions of core-js you do rely on - In general, it is a mistake to
+  blindly take dependencies from upstream package registries. In other words, you
+  should never install an NPM package directly to your production environment. You
+  may find yourself in a “left-pad” situation where a module owner one day decides
+  to remove that package from the face of the earth. Or worse, where the package
+  owner publishes a new malicious package under the same version that flows down
+  to consumers. Those packages should, instead, be installed through a cache that
+  you and your security team have independently created, validated, and control.
+  Yes, this is another service you’d be running internally, but it’s well worth
+  the cost in order to mitigate an entire class of supply chain attacks.
 
-* Raise this concern with your CISO - Chief Information Security Officers are
-tasked with tracking, monitoring, and assessing the risk to all security vectors
-your company may be vulnerable to. It’s clear that Denis is in financial
-trouble. That, compounded with the fact that he has admin access to force push
-onto the main branch and unilaterally publish new packages, should be
-concerning. Work with your security team and CISO to determine the threat level
-of this risk and what impact it has on your code bases.
+- Raise this concern with your CISO - Chief Information Security Officers are
+  tasked with tracking, monitoring, and assessing the risk to all security vectors
+  your company may be vulnerable to. It’s clear that Denis is in financial
+  trouble. That, compounded with the fact that he has admin access to force push
+  onto the main branch and unilaterally publish new packages, should be
+  concerning. Work with your security team and CISO to determine the threat level
+  of this risk and what impact it has on your code bases.
 
-* Get involved with the project - I’ve generally advocated for this in the past.
-And while core-js appears to be a difficult project to get involved with, there
-are still issues on GitHub you can raise, a few pull-requests to be commented
-on, and the commit log to be validated. If it’s a critical project to your
-company, spend the time, money, and engineering resources to protect your
-companies assets by getting involved.
+- Get involved with the project - I’ve generally advocated for this in the past.
+  And while core-js appears to be a difficult project to get involved with, there
+  are still issues on GitHub you can raise, a few pull-requests to be commented
+  on, and the commit log to be validated. If it’s a critical project to your
+  company, spend the time, money, and engineering resources to protect your
+  companies assets by getting involved.
 
-* Find a reputable alternative and move to it - This is the best long term
-solution. But would require significant engineering resources.
+- Find a reputable alternative and move to it - This is the best long term
+  solution. But would require significant engineering resources.
 
 A quick note on making a financial contribution - by donating, you are not
 supporting a project. You are not providing funds to a well defined

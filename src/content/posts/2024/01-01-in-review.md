@@ -31,7 +31,7 @@ And a new, ambiguous return to office policy with the looming potential of havin
 It was a very befuddling decision to me: the entire Bottlerocket team was distributed all around the world.
 Why "return to team" when the team was fully remote and async to begin with?
 
-All of that _and_ I was coming off a relatively high pressure team at VMware shipping 
+All of that _and_ I was coming off a relatively high pressure team at VMware shipping
 ([and eventually deprecating](https://github.com/vmware-tanzu/community-edition)) TCE.
 
 _"Customer obsession"_ is probably Amazon's deepest principle.
@@ -70,19 +70,19 @@ CEO of OpenSauced, the self proclaimed [_"Beyonce of open source"_](https://then
 
 So many times I found myself asking _"who exactly is this?"_ or _"will this project accept contributions ..?"_ or _"is this project's community a welcoming one?"_ when working in open source.
 
-Joining a very early stage startup is something I've always wanted to try: you hear these legendary stories of people in the early 90s and 2000s solving huge problems with technology out of their garages (thankfully, we're not running OpenSauced out of bdougie's garage, we're fully remote!) 
+Joining a very early stage startup is something I've always wanted to try: you hear these legendary stories of people in the early 90s and 2000s solving huge problems with technology out of their garages (thankfully, we're not running OpenSauced out of bdougie's garage, we're fully remote!)
 
 I followed my gut, trusted my instinct, and joined OpenSauced in mid 2023, leaving behind a very good and comfortable job at AWS: what an incredible decision! Since then, I've learned _alot_, been building _alot_ of things, and have shipped a number of big enhancements to our data pipelines, backend infrastructure, frontend, how we approach building metrics and insights around open source contributions, and much more. I deeply believe that in 2024, we will have some incredible things to show off.
 
 Some public OpenSauced work I'm most proud of:
 
-- [Efficiently caching and ingesting git repos](https://github.com/open-sauced/go-api): I've written about this before, but one of the many challenges in building ontop of Git and Git based platforms is how you efficiently pull down new changes from repos (without having to clone the whole thing over and over again. Such a waste!) We needed a mechanism that could introspect individual commits in git repos to then derive insights from: enter the pizza oven, a Go based web server for cloning repos to disc, introspecting commits, and upserting new commits it sees to a database. one of the major efficiency bumps it gets is my implementation of an LRU cache: a caching mechanisms that drops the "least used" member when the cache is full. I could go _very_  deep into this project, but i encourage you to read more about it here:
-	- https://dev.to/opensauced/caching-git-repos-a-deep-dive-into-opensauceds-pizza-oven-service-49nf
-	- https://dev.to/opensauced/how-we-made-our-go-microservice-24x-faster-5h3l
+- [Efficiently caching and ingesting git repos](https://github.com/open-sauced/go-api): I've written about this before, but one of the many challenges in building ontop of Git and Git based platforms is how you efficiently pull down new changes from repos (without having to clone the whole thing over and over again. Such a waste!) We needed a mechanism that could introspect individual commits in git repos to then derive insights from: enter the pizza oven, a Go based web server for cloning repos to disc, introspecting commits, and upserting new commits it sees to a database. one of the major efficiency bumps it gets is my implementation of an LRU cache: a caching mechanisms that drops the "least used" member when the cache is full. I could go _very_ deep into this project, but i encourage you to read more about it here:
+  - https://dev.to/opensauced/caching-git-repos-a-deep-dive-into-opensauceds-pizza-oven-service-49nf
+  - https://dev.to/opensauced/how-we-made-our-go-microservice-24x-faster-5h3l
 - [The OpenSauced `pizza` CLI](https://github.com/open-sauced/pizza-cli): OpenSauced isn't just a web app for metrics and insights. It's a software platform that is made to enable people building and consuming in the open. One thing we recognized was missing from our suite of tools is a CLI: the `pizza` CLI is a Go, Cobra based CLI that integrates with the OpenSauced API, bringing deeper capabilities to people who want to integrate OpenSauced into their CI/CD pipelines, scripts, or internal reporting tools.
-	- Shipping an OpenSauced Go client: alongside the OpenSauced CLI is [a Go based client for the OpenSauced API](https://github.com/open-sauced/go-api). This enables _anyone_ using Go to build ontop of our API and integrate deeply with our platform.
+  - Shipping an OpenSauced Go client: alongside the OpenSauced CLI is [a Go based client for the OpenSauced API](https://github.com/open-sauced/go-api). This enables _anyone_ using Go to build ontop of our API and integrate deeply with our platform.
 - Integrating realtime, events driven data into OpenSauced: the cat's _abit_ out of the bag on this one, and there is _so_ much more to come, but I've been heads down over the last month or so shipping new infrastructure and data pipelines to integrate GitHub's realtime events data into OpenSauced. Much of this is possible through the magic of the Timescale time series database: this gives us the power of leveraging Postgres _alongside_ time series events data from GitHub. [Check out the initial integration](https://github.com/open-sauced/app/pull/2293) and be on the lookout for some _really_ incredible improvements to the platform through these new mechanisms.
- 
+
 #### Lesson:
 
 In 1994, Jeff Bezos took a huge leap of faith, quit his well paying, comfortable job in New York City [to start Amazon](https://www.aboutamazon.com/news/policy-news-views/statement-by-jeff-bezos-to-the-u-s-house-committee-on-the-judiciary): _"... I decided that if I didn’t at least give it my best shot, I was going to regret not trying to participate in this thing called the internet that I thought was going to be a big deal"_.
@@ -119,7 +119,7 @@ Part of me wondered when I joined AWS if my workflows in Neovim would be able to
 
 Here are a few of my favorite little tidbits of neovim goodness from 2023:
 
-- [`mason.nvim`](https://github.com/williamboman/mason.nvim): Mason is what I personally would consider 
+- [`mason.nvim`](https://github.com/williamboman/mason.nvim): Mason is what I personally would consider
   one of Neovim's most important 3rd party projects. It would not surprise me if it eventually was
   integrated directly into Neovim itself. Mason is a sort of manager of editor tooling, primarily
   LSP servers, linters, formaters, and the like. It provides a thin, simple interface for
@@ -172,7 +172,7 @@ Here's how I used LLMs in 2023:
 The biggest shift in my mental paradigm around LLMs is that running them locally
 is actually not as bad as you'd think: Apple's newest M chipsets are honestly powerhouses
 and I've had amazing results with some of the 7B and 13B parameter models:
-I believe the future of open source AI technology is very bright and I hope 
+I believe the future of open source AI technology is very bright and I hope
 it grows to rival that of major tech companies building this technology on proprietary software.
 Long live the open source movement!! And long live open source LLMs!
 
@@ -190,7 +190,7 @@ more than very mild social media consumption is a detriment to my well-being.
 
 I'm certain that being burned out at AWS was in some ways due to my social media use:
 it was hard to not doom scroll news about layoffs, the stock market, or the waning tech job field.
-It was hard to not see viral posts like _"how I became a 10x engineer"_ or _"how I made 1 million dollars as a software engineer"_. 
+It was hard to not see viral posts like _"how I became a 10x engineer"_ or _"how I made 1 million dollars as a software engineer"_.
 Eventually, unconsciously, those words start to change your mindset.
 And overall, it just made me discontent: this all reminds me of the famous Theodore Roosevelt quote:
 

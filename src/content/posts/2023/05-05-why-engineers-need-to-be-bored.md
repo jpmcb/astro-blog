@@ -64,7 +64,7 @@ within. CEO of Amazon and previous leader of AWS, [Andy Jassy said](https://tech
 > decoupled, API-access fashion, and then all of the internal teams inside of
 > Amazon expected to be able to consume their peer internal development team
 > services in that way. So very quietly around 2000, we became a services
-> company with really no fanfare 
+> company with really no fanfare
 
 Over time, the innovation and creation of AWS within Amazon by a small group of
 engineers and product leaders would become the central product of the entire

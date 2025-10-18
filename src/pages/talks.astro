@@ -6,139 +6,137 @@ import Header from "../components/Header.astro";
 import Youtube from "../components/Youtube.astro";
 import type { CollectionEntry } from "astro:content";
 import Talk from "../components/Talk.astro";
+import BaseLayout from "./BaseLayout.astro";
 
 const talks = (await getCollection("talks")).sort(
-	(a, b) => b.data.year - a.data.year,
+  (a, b) => b.data.year - a.data.year,
 );
 
 const groupedTalks = talks.reduce(
-	(acc, talk) => {
-		(acc[talk.data.year] = acc[talk.data.year] || []).push(talk);
-		return acc;
-	},
-	{} as Record<number, CollectionEntry<"talks">[]>,
+  (acc, talk) => {
+    (acc[talk.data.year] = acc[talk.data.year] || []).push(talk);
+    return acc;
+  },
+  {} as Record<number, CollectionEntry<"talks">[]>,
 );
 ---
 
-<html lang="en">
-   <head>
-       <BaseHead title="Talks" description="Talks by John McBride" />
-   </head>
+<BaseLayout title="Talks" description="Talks by John McBride">
+  <main>
+    <p>
+      - speaking inquiries: <a href="mailto:hello.john.codes@gmail.com"
+        >hello.john.codes@gmail.com</a
+      >
+    </p>
+    <!--Probably better to have embedded here ...-->
+    - <a href="https://github.com/jpmcb/talks"
+      >Bio and high quality headshots for events can be found here.</a
+    >
+  </main>
+  <hr />
+  <br />
 
-   <body>
-       <Header />
-       <main>
-               <p>
-               - speaking inquiries: <a href="mailto:hello.john.codes@gmail.com">hello.john.codes@gmail.com</a>
-               </br>
-               <!--Probably better to have embedded here ...-->
-               - <a href="https://github.com/jpmcb/talks">Bio and high quality headshots for events can be found here.</a>
-               </p>
-               <hr>
-               <br>
-
-            {Object.entries(groupedTalks)
-                .sort(([yearA], [yearB]) => Number(yearB) - Number(yearA))
-                .map(([year, yearTalks]) => (
-                    <div class="year-group">
-                        <h2>{year}</h2>
-                        <div class="talks">
-                            {yearTalks.map(talk => {
-                                return (
-                                <details class="talk">
-                                    <summary>
-                                        <div class="event">{talk.data.event}</div>
-                                        <div class="title">{talk.data.title}</div>
-                                    </summary>
-                                    <div class="abstract">
-                                        <Talk talk={talk} />
-                                    </div>
-                                    {talk.data.youtubeVideoId && (
-                                        <div class="video">
-                                            <Youtube videoId={talk.data.youtubeVideoId} />
-                                        </div>
-                                    )}
-                                </details>
-                            )})}
-                        </div>
+  {
+    Object.entries(groupedTalks)
+      .sort(([yearA], [yearB]) => Number(yearB) - Number(yearA))
+      .map(([year, yearTalks]) => (
+        <div class="year-group">
+          <h2>{year}</h2>
+          <div class="talks">
+            {yearTalks.map((talk) => {
+              return (
+                <details class="talk">
+                  <summary>
+                    <div class="event">{talk.data.event}</div>
+                    <div class="title">{talk.data.title}</div>
+                  </summary>
+                  <div class="abstract">
+                    <Talk talk={talk} />
+                  </div>
+                  {talk.data.youtubeVideoId && (
+                    <div class="video">
+                      <Youtube videoId={talk.data.youtubeVideoId} />
                     </div>
-                ))
-            }
-        </main>
-        <Footer />
-    </body>
-</html>
+                  )}
+                </details>
+              );
+            })}
+          </div>
+        </div>
+      ))
+  }
 
-<style>
+  <style>
     .contact {
-        margin-bottom: 2em;
-        font-size: 0.9em;
-        color: var(--text-secondary);
+      margin-bottom: 2em;
+      font-size: 0.9em;
+      color: var(--text-secondary);
     }
 
     .year-group {
-        margin-bottom: 2em;
+      margin-bottom: 2em;
     }
 
     .year-group h2 {
-        font-size: 1.5em;
-        margin-bottom: 0.5em;
+      font-size: 1.5em;
+      margin-bottom: 0.5em;
     }
 
     .talks {
-        display: flex;
-        flex-direction: column;
-        gap: 1em;
+      display: flex;
+      flex-direction: column;
+      gap: 1em;
     }
 
     .talk {
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        transition: all 0.2s ease;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     }
 
     .talk:hover {
-        border-color: var(--accent);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        transform: translateY(-0.75px);
+      border-color: var(--accent);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transform: translateY(-0.75px);
     }
 
     /* Dark theme specific shadows */
     :root.dark .talk {
-        box-shadow: 0 2px 4px rgba(255, 255, 255, 0.03);
+      box-shadow: 0 2px 4px rgba(255, 255, 255, 0.03);
     }
 
     :root.dark .talk:hover {
-        box-shadow: 0 4px 8px rgba(255, 255, 255, 0.09);
+      box-shadow: 0 4px 8px rgba(255, 255, 255, 0.09);
     }
 
     .talk summary {
-        padding: 1em;
-        cursor: pointer;
-        list-style: none;
+      padding: 1em;
+      cursor: pointer;
+      list-style: none;
     }
 
     .talk summary::-webkit-details-marker {
-        display: none;
+      display: none;
     }
 
     .event {
-        font-size: 0.9em;
-        color: var(--text-secondary);
-        margin-bottom: 0.25em;
+      font-size: 0.9em;
+      color: var(--text-secondary);
+      margin-bottom: 0.25em;
     }
 
     .title {
-        font-weight: 500;
-        line-height: 1.4;
+      font-weight: 500;
+      line-height: 1.4;
     }
 
     .abstract {
-        padding: 1em;
-        padding-top: 0;
-        color: var(--text-secondary);
-        font-size: 0.95em;
-        line-height: 1.6;
+      padding: 1em;
+      padding-top: 0;
+      color: var(--text-secondary);
+      font-size: 0.95em;
+      line-height: 1.6;
     }
-</style>
+  </style>
+</BaseLayout>

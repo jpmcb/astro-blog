@@ -9,7 +9,7 @@
 import "lite-youtube-embed/src/lite-yt-embed.css";
 
 export interface Props extends astroHTML.JSX.HTMLAttributes {
-	videoId: string;
+  videoId: string;
 }
 
 const { videoId, title, ...attrs } = Astro.props as Props;
@@ -17,21 +17,16 @@ const { videoId, title, ...attrs } = Astro.props as Props;
 const href = `https://youtube.com/watch?v=${videoId}`;
 ---
 
-<lite-youtube
-	{videoId}
-	{title}
-	data-title={title}
-	{...attrs}
->
-	<a {href} class="lty-playbtn">
-		<span class="lyt-visually-hidden">Play</span>
-	</a>
+<lite-youtube {videoId} {title} data-title={title} {...attrs}>
+  <a {href} class="lty-playbtn">
+    <span class="lyt-visually-hidden">Play</span>
+  </a>
 </lite-youtube>
 
 <script src="lite-youtube-embed"></script>
 
 <style is:global>
-    lite-youtube {
-        max-width: none !important;
-    }
+  lite-youtube {
+    max-width: none !important;
+  }
 </style>

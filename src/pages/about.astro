@@ -1,70 +1,58 @@
 ---
-import BaseHead from "../components/BaseHead.astro";
-import Footer from "../components/Footer.astro";
-import Header from "../components/Header.astro";
+import BaseLayout from "./BaseLayout.astro";
 ---
 
+<BaseLayout title="about" description="about john mcbride">
+  <div class="prose">
+    <img width={1020} height={510} src="/john-talking-action-shot.png" alt="" />
 
+    <p>
+      Hello! My name is John McBride. I'm a staff engineer at Zuplo where I'm
+      building our AI and backend infrastructure.
+    </p>
 
-<html lang="en">
-	<head>
-		<BaseHead title="about" description="about john mcbride" />
-	</head>
+    <p>
+      In the past, I've worked at The Linux Foundation, OpenSauced, AWS, VMware,
+      &amp Pivotal Cloud Foundry where I worked on open source software,
+      observability &amp SRE tooling, Kubernetes, Linux based operating systems,
+      and cloud technologies.
+    </p>
 
-	<body>
-		<Header />
-		<main>
-            <div class="prose">
-                <img width={1020} height={510} src='/john-talking-action-shot.png' alt="" />
+    <p>
+      This site is my personal landing page and blog. You'll find all kinds of
+      stuff here: things about tech, short stories, long-form essays, photos,
+      music, videos, ramblings on philosophy, and really, whatever I want
+      <i>(it's my website after all)</i>.
+    </p>
 
-                <p>
-                    Hello! My name is John McBride. I'm a staff engineer at Zuplo
-                    where I'm building our AI and backend infrastructure.
-                </p>
+    <p>
+      All opinions and views herein are my <i>own</i> opinions and do <i
+        ><b>not</b></i
+      > reflect those of any employer (past, present, future, or inter-dimensional).
+    </p>
 
-                <p>
-                    In the past, I've worked at The Linux Foundation, OpenSauced, AWS, VMware, &amp Pivotal Cloud Foundry
-                    where I worked on open source software, observability &amp SRE tooling, Kubernetes,
-                    Linux based operating systems, and cloud technologies.
-                </p>
+    <h2>contact</h2>
 
-                <p>
-                    This site is my personal landing page and blog.
-                    You'll find all kinds of stuff here: things about tech, short stories, long-form essays,
-                    photos, music, videos, ramblings on philosophy, and really, whatever I want
-                    <i>(it's my website after all)</i>.
-                </p>
+    <p>
+      I can be reached directly at <a href="mailto:hello@johncodes.com"
+        >hello@johncodes.com</a
+      >
+    </p>
 
-                <p>
-                    All opinions and views herein are my <i>own</i> opinions and do <i><b>not</b></i> reflect
-                    those of any employer (past, present, future, or inter-dimensional).
-                </p>
+    <h2>support me</h2>
 
-                <h2>
-                    contact
-                </h2>
+    <p>
+      If you find any of the open source work I've done valuable, please
+      consider <a href="https://github.com/sponsors/jpmcb"
+        >supporting me via GitHub sponsors</a
+      >.
+      <p></p>
+    </p>
 
-                <p>
-                    I can be reached directly at <a href="mailto:hello@johncodes.com">hello@johncodes.com</a>
-                </p>
-
-                <h2>
-                    support me
-                </h2>
-
-                <p>
-                    If you find any of the open source work I've done valuable,
-                    please consider <a href="https://github.com/sponsors/jpmcb">supporting me via GitHub sponsors</a>.
-                <p/>
-
-                </hr>
-
-                <p>
-                    You can find my personal <a href="/public-keys.txt">public PGP keys here</a>.
-                    Use it to send me secret messages or verify my identity online.
-                </p>
-            </div>
-		</main>
-		<Footer />
-	</body>
-</html>
+    <p>
+      You can find my personal <a href="/public-keys.txt"
+        >public PGP keys here</a
+      >. Use it to send me secret messages or verify my identity online.
+    </p>
+  </div>
+</BaseLayout>

@@ -83,7 +83,7 @@ tmux new -s my-npm-tests -d -c ~/workspace/opensauced/api
 tmux send-keys -t my-npm-tests "npm run test" Enter
 ```
 
-A few things to note here: 
+A few things to note here:
 
 `Enter` uses the special "key binding syntax" for sending a literal `Enter` key
 at the end of the command. If we needed to send something else, like "control c",

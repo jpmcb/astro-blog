@@ -4,9 +4,9 @@ pubDate: 2023-08-11
 ---
 
 The world of software engineering influencers, what I typically like to refer to
-as "tech-fluencers", has grown significantly in the last few years. There are 
+as "tech-fluencers", has grown significantly in the last few years. There are
 people who have built entire personal brands and businesses solely on the basis
-of their online tech content. And many massive technology companies now 
+of their online tech content. And many massive technology companies now
 participate in the same spheres that 5 years ago would have been unheard of
 (just think about all the memes major tech companies have created in the last
 few years).
@@ -37,7 +37,7 @@ And honestly, after hundreds and hundreds of videos, none of it really sticks
 out as actually being significant to my career. After all, most of it was fluff
 and memes without alot of sustenance.
 
-This is the trap of content creation that is all too tantalizing: 
+This is the trap of content creation that is all too tantalizing:
 maybe start with pure intent but eventually find yourself feeding the
 algorithms a never ending stream of content for the hopes of achieving some
 amorphous goal that has bastardized into something you don't recognize anymore.
@@ -48,13 +48,13 @@ felt pretty disappointed in what seemed like a huge wasted effort.
 I think Will Larson sums this all up incredibly well in his piece
 ["How to be a tech influencer"](https://lethain.com/tech-influencer/). He says:
 
-> *Most successful people are not well-known online.* If you participate
-frequently within social media, it’s easy to get sucked into the reality 
-distortion field it creates. Being well-known in an online community feels
-equivalent to professional credibility when you’re spending a lot of time in
-that community. My experience is that very few of the most successful folks I
-know are well-known online, and many of the most successful folks I know don’t
-create content online at all.
+> _Most successful people are not well-known online._ If you participate
+> frequently within social media, it’s easy to get sucked into the reality
+> distortion field it creates. Being well-known in an online community feels
+> equivalent to professional credibility when you’re spending a lot of time in
+> that community. My experience is that very few of the most successful folks I
+> know are well-known online, and many of the most successful folks I know don’t
+> create content online at all.
 
 ---
 
@@ -96,12 +96,12 @@ Ironically, generating prestige with online content can be a very successful way
 to go about amplifying your existing reputation. Experimenting with different
 forms of content and distribution models is important, but I want to stress
 that creating content to amplify your prestige should not be the same as content
-creation (at least in the typical, 2023 sense). You should not fall prey to the 
+creation (at least in the typical, 2023 sense). You should not fall prey to the
 temptations of algorithms designed to steal your attention and sap your creative
 energy. You should simply use them as a tool of distribution if necessary.
 
 But more importantly, the quality of your content matters significantly more
-than the quantity. Typical social media influence dictates that you must post 
+than the quantity. Typical social media influence dictates that you must post
 on a regular schedule. But for the engineering leader looking to grow their
 prestige, one or two extremely high quality pieces go a very very long way.
 It's not necessary that you always be chugging out content since relevance in
@@ -195,8 +195,8 @@ Having a wealth of talks, deep dives, and newsletters ensures that other people
 (like your boss or your co-workers) have something to talk about.
 
 And remember, prestige holds you to the highest bar of quality. So at this
-point, regardless of how many years it's been, you can be assured that if 
-people are talking about you, discussing a talk you gave, or chatting about 
+point, regardless of how many years it's been, you can be assured that if
+people are talking about you, discussing a talk you gave, or chatting about
 something you've achieved, you know that it's something that you can be proud
 of and respect yourself for.
 

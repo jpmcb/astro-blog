@@ -5,7 +5,7 @@ isPopular: true
 ---
 
 If you were to visit one of the biggest React drag and drop libraries on GitHub,
-[Atlassian’s react-beautiful-dnd](https://github.com/atlassian/react-beautiful-dnd), 
+[Atlassian’s react-beautiful-dnd](https://github.com/atlassian/react-beautiful-dnd),
 you would be greeted with the following message:
 
 > This library continues to be relied upon heavily by Atlassian products, but
@@ -102,7 +102,7 @@ of the react-beautiful-dnd library agrees:
 
 > Over time I am more comfortable with the notion that all software has a
 > shelf life and that it's okay for open source maintainers to discontinue
-> working on projects if they choose to 
+> working on projects if they choose to
 
 I deeply empathize with any open source maintainers that face such a decision:
 it’s not easy to find yourself with new priorities, reduced headcount, or tricky

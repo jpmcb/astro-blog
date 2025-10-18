@@ -155,6 +155,7 @@ func BenchmarkContextAsync(b *testing.B) {
 ```
 
 Run the test suite with the leakchecker library
+
 ```
 ❯ go test -v
 === RUN   TestSelecting
@@ -173,6 +174,7 @@ done checking leak
 ```
 
 Run the benchmarks with `bench` and `benchmem` to see performance
+
 ```
 ❯ go test -v -bench=.  -benchmem -run "Bench*"
 goos: darwin

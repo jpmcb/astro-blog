@@ -3,7 +3,7 @@ title: "On maintaining spf13/cobra"
 pubDate: 2023-06-29
 ---
 
-import Youtube from "../../../components/Youtube.astro"
+import Youtube from "../../../components/Youtube.astro";
 
 There's something I feel like I need to acknowledge
 around [my maintainership of](https://github.com/spf13/cobra)
@@ -18,7 +18,7 @@ After all, AWS alone is a massive business unit with thousands of products
 and tens of thousands of engineers all around the world.
 
 And I totally get it: there's legal & licensing considerations,
-there's staffing calculations, there's non-competes, there's product commitments, 
+there's staffing calculations, there's non-competes, there's product commitments,
 there's other competing companies working on the same projects in the open source, etc. etc.
 All this leaves very little room for individual contributors to give back to the community
 where they have the autonomy and the power to do so.
@@ -30,7 +30,7 @@ a "bonus" thing I've worked on.
 
 But it really pained me to not be able to dedicate _some_ time to an important project
 within the Cloud Native and Kubernetes ecosystem.
-In the last 3 months alone, [cobra's PR velocity has crawled to a standstill](https://insights.opensauced.pizza/pages/jpmcb/363/dashboard), 
+In the last 3 months alone, [cobra's PR velocity has crawled to a standstill](https://insights.opensauced.pizza/pages/jpmcb/363/dashboard),
 there have been only a few merged PRs,
 and we've neglected to keep up with triaging new issues.
 
@@ -79,8 +79,8 @@ I think about that talk alot.
 And it keeps me up at night sometimes:
 what would it take for a bad actor to hack my GitHub account and inject some
 malicious dependency into cobra (therefore poisoning the dependencies in
-[Kubernetes](https://johncodes.com/posts/2023/06-13-goodbye-aws/), 
-[Helm](https://github.com/helm/helm/blob/03911aeab78290394e589cf7705d3fd542a236c9/go.mod#L32), 
+[Kubernetes](https://johncodes.com/posts/2023/06-13-goodbye-aws/),
+[Helm](https://github.com/helm/helm/blob/03911aeab78290394e589cf7705d3fd542a236c9/go.mod#L32),
 [Istio](https://github.com/istio/istio/blob/36e6875994e53ddb28e86d6a5f13b56ca15a41d3/go.mod#L75),
 [Linkerd](https://github.com/linkerd/linkerd2/blob/18755e45cc590c590eedcfa3d30ade09c8b8e7e1/go.mod#L35),
 [Docker](https://github.com/docker/cli/blob/d2b376da9256df7d1d0c1fc310db621bd18dc21b/vendor.mod#L35), etc. etc.).

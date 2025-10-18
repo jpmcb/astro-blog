@@ -81,8 +81,8 @@ to keep the project afloat. Many people volunteered but then were never seen
 again. [And the bar for maintainer-ship was rightfully very high:](https://github.com/gorilla#gorilla-toolkit)
 
 > just handing the reins of even a single software package that has north of 13k
-unique clones a week (mux) is just not something I’d ever be comfortable with.
-This has tended to play out poorly with other projects.
+> unique clones a week (mux) is just not something I’d ever be comfortable with.
+> This has tended to play out poorly with other projects.
 
 And in the past, this has played out poorly in other projects:
 
@@ -123,8 +123,8 @@ approved and allowed this to happen?
 [The owner of the GitHub repository, and original author of the code, said:](https://github.com/dominictarr/event-stream/issues/116#issuecomment-440927400)
 
 > he emailed me and said he wanted to maintain the module, so I gave it to him. I
-don't get any thing from maintaining this module, and I don't even use it
-anymore, and havn't for years.
+> don't get any thing from maintaining this module, and I don't even use it
+> anymore, and havn't for years.
 
 and
 
@@ -143,13 +143,13 @@ the background to let their software go into disarray.
 [This was the case with Gorilla:](https://github.com/gorilla#gorilla-toolkit)
 
 > The original author and maintainer, moraes, had moved on a long time ago.
-kisielk and garyburd had the longest run, maintaining a mix of the HTTP
-libraries and gorilla/websocket respectively. I (elithrar) got involved
-sometime in 2014 or so, when I noticed kisielk doing a lot of the heavy lifting
-and wanted to help contribute back to the libraries I was using for a number of
-personal projects. Since about ~2018 or so, I was the (mostly) sole maintainer
-of everything but websocket, which is about the same time garyburd put out an
-(effectively unsuccessful) call for new maintainers there too.
+> kisielk and garyburd had the longest run, maintaining a mix of the HTTP
+> libraries and gorilla/websocket respectively. I (elithrar) got involved
+> sometime in 2014 or so, when I noticed kisielk doing a lot of the heavy lifting
+> and wanted to help contribute back to the libraries I was using for a number of
+> personal projects. Since about ~2018 or so, I was the (mostly) sole maintainer
+> of everything but websocket, which is about the same time garyburd put out an
+> (effectively unsuccessful) call for new maintainers there too.
 
 The secure software supply-chain will never truly be strong and secure as long
 as a single solo maintainer is able to disrupt an entire ecosystem of packages
@@ -166,8 +166,8 @@ at maintainers of important open source projects,
 [something Valve has started doing:](https://www.theverge.com/23499215/valve-steam-deck-interview-late-2022)
 
 > Griffais says the company is also directly paying more than 100 open-source
-developers to work on the Proton compatibility layer, the Mesa graphics driver,
-and Vulkan, among other tasks like Steam for Linux and Chromebooks.
+> developers to work on the Proton compatibility layer, the Mesa graphics driver,
+> and Vulkan, among other tasks like Steam for Linux and Chromebooks.
 
 but at some point, it becomes unreasonable to ask just a handful of people to
 hold up the integrity, security, and viability of your companies entire product
@@ -187,8 +187,8 @@ entire world.
 [And this is something the Gorilla maintainers recognized as well:](https://github.com/gorilla#gorilla-toolkit)
 
 > No. I don’t think any of us were after money here. The Gorilla Toolkit was,
-looking back at the most active maintainers, a passion project. We didn’t want
-it to be a job.
+> looking back at the most active maintainers, a passion project. We didn’t want
+> it to be a job.
 
 For them, it wasn’t about the money, so throwing any amount at the project
 wouldn’t have helped. It was about the software’s quality, maintainability, and
@@ -228,8 +228,8 @@ been purposefully broken to force anyone using it to choose a better, and
 hopefully, more secure option.
 
 > I do believe that open source software is entitled to a lifecycle — a
-beginning, a middle, and an end — and that no project is required to live on
-forever. That may not make everyone happy, but such is life.
+> beginning, a middle, and an end — and that no project is required to live on
+> forever. That may not make everyone happy, but such is life.
 
 But earlier this year, people in the Gorilla community noticed something:
 a new group of individuals from Red Hat had been added as maintainers to the Gorilla GitHub org.
@@ -238,9 +238,9 @@ had done exactly what they promised they would never do: at the 11th hour, they 
 over the project to people with little vetting from the community.
 
 > To address many comments that we have seen - we would like to clarify that
-Red Hat is not taking over this project. While the new Core Maintainers all
-happen to work at Red Hat, our hope is that developers from many different
-organizations and backgrounds will join the project over time.
+> Red Hat is not taking over this project. While the new Core Maintainers all
+> happen to work at Red Hat, our hope is that developers from many different
+> organizations and backgrounds will join the project over time.
 
 Maybe Gorilla was too important to drift slowly into obscurity and Red Hat
 rightfully allocated some engineering resources to the project.

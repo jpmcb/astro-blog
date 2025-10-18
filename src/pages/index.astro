@@ -7,86 +7,91 @@ import { getCollection } from "astro:content";
 import "../styles/post-rows.css";
 
 const latestPosts = (await getCollection("posts"))
-	.filter((post) => !post.data.isDraft)
-	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-	.slice(0, 5);
+  .filter((post) => !post.data.isDraft)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 5);
 
 const popularPosts = (await getCollection("posts"))
-	.filter((post) => !post.data.isDraft)
-	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-	.filter((post) => post.data.isPopular)
-	.slice(0, 5);
+  .filter((post) => !post.data.isDraft)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .filter((post) => post.data.isPopular)
+  .slice(0, 5);
 
 const favPosts = (await getCollection("posts"))
-	.filter((post) => !post.data.isDraft)
-	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-	.filter((post) => post.data.isFav)
-	.slice(0, 5);
+  .filter((post) => !post.data.isDraft)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .filter((post) => post.data.isFav)
+  .slice(0, 5);
 ---
 
 <!doctype html>
 <html lang="en">
-	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-	</head>
-	<body>
-		<Header />
-        <main>
-            <div class="title-posts">
-                <h3>
-                    latest
-                </h3>
-                <div class="posts">
-                    {latestPosts.map(post => (
-                        <div class="post-row">
-                            <a href={`/archive/${post.id}/`}>{post.data.title}</a>
-                            <span class="date">{post.data.pubDate.toLocaleDateString('en-us', {
-                                year: 'numeric',
-                                month: 'short',
-                                day: 'numeric',
-                            })}</span>
-                        </div>
-                    ))}
-                </div>
-            </div>
+  <head>
+    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+  </head>
+  <body>
+    <Header />
+    <main>
+      <div class="title-posts">
+        <h3>latest</h3>
+        <div class="posts">
+          {
+            latestPosts.map((post) => (
+              <div class="post-row">
+                <a href={`/archive/${post.id}/`}>{post.data.title}</a>
+                <span class="date">
+                  {post.data.pubDate.toLocaleDateString("en-us", {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                  })}
+                </span>
+              </div>
+            ))
+          }
+        </div>
+      </div>
 
+      <div class="title-posts">
+        <h3>popular posts</h3>
+        <div class="posts">
+          {
+            popularPosts.map((post) => (
+              <div class="post-row">
+                <a href={`/archive/${post.id}/`}>{post.data.title}</a>
+                <span class="date">
+                  {post.data.pubDate.toLocaleDateString("en-us", {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                  })}
+                </span>
+              </div>
+            ))
+          }
+        </div>
+      </div>
 
-            <div class="title-posts">
-                <h3>
-                    popular posts
-                </h3>
-                <div class="posts">
-                    {popularPosts.map(post => (
-                        <div class="post-row">
-                            <a href={`/archive/${post.id}/`}>{post.data.title}</a>
-                            <span class="date">{post.data.pubDate.toLocaleDateString('en-us', {
-                                year: 'numeric',
-                                month: 'short',
-                                day: 'numeric',
-                            })}</span>
-                        </div>
-                    ))}
-                </div>
-            </div>
-
-            <div class="title-posts">
-                <h3>
-                    my favorites
-                </h3>
-                <div class="posts">
-                    {favPosts.map(post => (
-                        <div class="post-row">
-                            <a href={`/archive/${post.id}/`}>{post.data.title}</a>
-                            <span class="date">{post.data.pubDate.toLocaleDateString('en-us', {
-                                year: 'numeric',
-                                month: 'short',
-                                day: 'numeric',
-                            })}</span>
-                        </div>
-                    ))}
-                </div>
-            </div>
-        </main>
-		<Footer />
-	</body>
+      <div class="title-posts">
+        <h3>my favorites</h3>
+        <div class="posts">
+          {
+            favPosts.map((post) => (
+              <div class="post-row">
+                <a href={`/archive/${post.id}/`}>{post.data.title}</a>
+                <span class="date">
+                  {post.data.pubDate.toLocaleDateString("en-us", {
+                    year: "numeric",
+                    month: "short",
+                    day: "numeric",
+                  })}
+                </span>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </main>
+    <Footer />
+  </body>
 </html>

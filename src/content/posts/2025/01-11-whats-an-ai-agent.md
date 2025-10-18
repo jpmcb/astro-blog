@@ -65,7 +65,7 @@ Let's start with a simple user question alongside a tool the model can use:
           // and "operation" are required while "operation" can only
           // be one of the provided enum vals. This tells the LLM how to
           // craft the JSON it'll return back since our program
-          // needs to be able to unmarshal the response correctly in 
+          // needs to be able to unmarshal the response correctly in
           // order to pass it into the tool's function in code.
 
           "properties": {
@@ -134,7 +134,7 @@ Llama3.2 responds with:
 ```
 
 Importantly, the `content` is empty _but_ the `tool_calls` array contains a
-call to the `calculator` tool with the correct arguments. Within our code, after calling the Ollama API, 
+call to the `calculator` tool with the correct arguments. Within our code, after calling the Ollama API,
 we can unmarshal that JSON,
 inspect the `a`, `b`, and `operation` arguments, and pass them to the connected
 function.
@@ -465,21 +465,21 @@ As agents and AI become ubiquitous with building software systems at large, we
 should think about good opportunities to integrate them: I’m
 bullish on AI being a net productivity win for everyone, **but we should also
 understand that it is NOT a silver bullet for all problems.** Anthropic made an
-excellent document titled [“Building effective agents”](https://www.anthropic.com/research/building-effective-agents) 
+excellent document titled [“Building effective agents”](https://www.anthropic.com/research/building-effective-agents)
 that chronicles “When (and when not) to use agents”:
 
 > When building applications with LLMs, we recommend finding the simplest solution
-possible, and only increasing complexity when needed. This might mean not
-building agentic systems at all. Agentic systems often trade latency and cost
-for better task performance, and you should consider when this tradeoff makes sense.
+> possible, and only increasing complexity when needed. This might mean not
+> building agentic systems at all. Agentic systems often trade latency and cost
+> for better task performance, and you should consider when this tradeoff makes sense.
 
 > When more complexity is warranted, workflows offer predictability and
-consistency for well-defined tasks, whereas agents are the better option when
-flexibility and model-driven decision-making are needed at scale. For many
-applications, however, optimizing single LLM calls with retrieval and in-context
-examples is usually enough.
+> consistency for well-defined tasks, whereas agents are the better option when
+> flexibility and model-driven decision-making are needed at scale. For many
+> applications, however, optimizing single LLM calls with retrieval and in-context
+> examples is usually enough.
 
-I think this is worth saying again: _"agents are the better option when flexibility 
+I think this is worth saying again: _"agents are the better option when flexibility
 and model-driven decision-making are needed at scale"_. But they are not always
 the best option.
 

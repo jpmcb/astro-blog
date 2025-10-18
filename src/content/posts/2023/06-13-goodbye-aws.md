@@ -16,11 +16,11 @@ Since before I started my computer science degree (almost 7 years ago!)
 I've wanted to cut my teeth on building a startup and working on a greenfield product.
 These kinds of opportunities are far & few between.
 And the timing is _just about_ right;
-I can't wait to push myself, learn new skills, and build new products 
+I can't wait to push myself, learn new skills, and build new products
 with a small, amazing tactical team.
 
 To everyone at AWS and the Bottlerocket team:
-Thank you for making the last year an incredible learning opportunity. 
+Thank you for making the last year an incredible learning opportunity.
 Here's hoping our paths cross again soon!! I'm sure I'll be seeing you around
 the open source ecosystem! Cheers!
 
@@ -28,7 +28,7 @@ the open source ecosystem! Cheers!
 
 If you're curious, here are a few personal reflections on the last year:
 
-### ***The power of grit.***
+### **_The power of grit._**
 
 There's something really incredible about a team of engineers dedicated to
 creating wonderful customer experiences
@@ -47,9 +47,9 @@ motivation and grit. It was pretty rare to hear _"it can't be done"_ or _"I can'
 More often then not, you'd hear _"how can we do this for our customers?"_
 or _"what needs to change in order to accomplish this"_.
 
-### ***The open source movement is alive and well.***
+### **_The open source movement is alive and well._**
 
-Just before joining Amazon, I was coming hot off of 
+Just before joining Amazon, I was coming hot off of
 Tanzu Community Edition at VMware, an open source Kubernetes platform aiming to
 be a simple and easy entry point for VMware customers to get introduced to the cloud
 native ecosystem.
@@ -78,13 +78,13 @@ awesome innovation happening out in the open wild.
 I'm energized and hopeful for the future of the free _(as in freedom, not as in beer)_
 and open movement.
 
-### ***When customers give you lemons, make lemonade.***
+### **_When customers give you lemons, make lemonade._**
 
 The "first principle" of working at Amazon is to be customer obsessed.
 And being customer obsessed means you should make all efforts to work backwards
 from the customer needs.
 
-I'm not gonna lie: at first, I really thought the whole "peculiar culture" and 
+I'm not gonna lie: at first, I really thought the whole "peculiar culture" and
 "customer obsessed" mantras were a load of b.s.
 
 But seeing real customer's needs get met on a daily basis by the team was a pretty
@@ -96,7 +96,7 @@ to hear of a real customer issue or need, make changes to address it, and ship i
 In software, customer needs, request, and issues are like lemons.
 And when you have an abundance of lemons, make lemonade.
 
-### ***Want to be understood? Write a document.***
+### **_Want to be understood? Write a document._**
 
 Before working at Amazon,
 I really, _really_ underestimated the power of technical writing.
@@ -120,7 +120,7 @@ more organized with my thoughts, and in the end, be a better engineer.
 Don't underestimate the power of writing: it's how you communicate technical
 ideas.
 
-### ***Make it boring. Making it scale. Make the right decision.***
+### **_Make it boring. Making it scale. Make the right decision._**
 
 New, sexy tech often gets in the way of building great customer products.
 

@@ -38,9 +38,9 @@ This printed each line surrounded by the appropriate curly braces and whitespace
 Let's break down how I did this and build the command one bit at a time:
 
 1. Awk is a Linux command line utility just like any other.
-But, similar to something like like python or lua,
-it's a special program interpreter that is especially
-good at scanning and processing inputs with small (or big) one liner programs you give it.
+   But, similar to something like like python or lua,
+   it's a special program interpreter that is especially
+   good at scanning and processing inputs with small (or big) one liner programs you give it.
 
 ```bash
 awk '<an-awk-program>' some-input-file
@@ -68,7 +68,7 @@ So a file like:
 
 ```text
 1 2 3
-4 5 6 
+4 5 6
 ```
 
 has 3 columns and 2 rows.
@@ -108,13 +108,13 @@ awk '{print "{\"full_name\": \"" $0 "\"},"}' names.txt
 ```
 
 First thing you'll notice is a confusing array of `"`
+
 - the first `"` denotes the beginning of a string output for awk to print.
-The subsequent `\"` are literal escaped quotes which we _want_ to appear in the output.
-We eventually end the first string with a standalone `"` to then print the line with the `$0` variable
-and then we enter a string again to add the trailing bracket `}` and comma `,`
+  The subsequent `\"` are literal escaped quotes which we _want_ to appear in the output.
+  We eventually end the first string with a standalone `"` to then print the line with the `$0` variable
+  and then we enter a string again to add the trailing bracket `}` and comma `,`
 
 When run, this outputs:
-
 
 ```text
 {"full_name": "john"},
@@ -144,9 +144,9 @@ The added whitespace within the strings (by including the literal escaped newlin
 are printed to give the correct, desired output!
 
 5. Bonus: what if we wanted to remove the trailing comma?
-What if we wanted to wrap this all in `[...]` to be closer to valid json?
-Yeah, yeah, I know, `jq` exists, but by the power of our lord and savior awk,
-all things possible!!
+   What if we wanted to wrap this all in `[...]` to be closer to valid json?
+   Yeah, yeah, I know, `jq` exists, but by the power of our lord and savior awk,
+   all things possible!!
 
 To remove the trailing comma, we can use a sliding window technique:
 

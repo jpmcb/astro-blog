@@ -7,7 +7,7 @@ So long tech Xitter! You will not be sorely missed.
 As [Kelsey Hightower recently asserted](https://bsky.app/profile/kelseyhightower.com/post/3lazfm34b3k2u):
 
 > Twitter became overrun with hate, and while I believe in free speech,
-I'm not looking to attend a Klan rally.
+> I'm not looking to attend a Klan rally.
 
 Before I log off for good, I wanted to archive a few of my Xitter _"greatest hits"_ -
 posts that I think were particularly fun, informative, or deserved to see the light of day.
@@ -65,7 +65,7 @@ to ship big platforms, huge features, and accomplish mass refactors
 when everything is essentially driven through "consensus by committee".
 When everyone is pairing
 with everyone else all the time, who makes the big, high level, impactful technical decisions?
-It's essentially a _lowest common denominator_ problem 
+It's essentially a _lowest common denominator_ problem
 where all programmers and technical decisions
 become the sum "average" of all the people involved, often being reduced down to the skill
 level of the lowest common denominator of the engineers involved.

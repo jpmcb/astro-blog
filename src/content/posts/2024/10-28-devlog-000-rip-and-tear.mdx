@@ -3,7 +3,7 @@ title: "Devlog 000 - rip-and-tear.nvim"
 pubDate: 2024-10-28
 ---
 
-import Youtube from "../../../components/Youtube.astro"
+import Youtube from "../../../components/Youtube.astro";
 
 <Youtube videoId="vU2Gj40v9II" />
 
@@ -27,12 +27,12 @@ _In the first age_\
 _In the first battle_\
 _When the bloatware first lengthened_\
 _One stood_
- 
+
 _He chose the path of perpetual torment_\
 _In his ravenous configurations he found no peace_\
 _And with boiling blood he scoured the internet_\
 _Seeking vengeance against the VScoders who had wronged him_
- 
+
 _And those that tasted the bite of his keyboard bindings named him_\
 _The Neovimer._
 
@@ -52,7 +52,7 @@ You can also pass in `player_command` to denote which system mp3 player should b
 
 ## Detecting keypresses
 
-Neovim provides a handy way to handle when a key is pressed via [`vim.on_key`](https://neovim.io/doc/user/lua.html#vim.on_key()):
+Neovim provides a handy way to handle when a key is pressed via [`vim.on_key`](<https://neovim.io/doc/user/lua.html#vim.on_key()>):
 
 ```lua
 vim.on_key(on_key_function, nvim_namespace_id)
@@ -62,7 +62,7 @@ In this arbitrary example, `on_key_function` is a defined function that takes a 
 
 The `nvim_namespace_id` is the integer ID of a Neovim namespace (which can be useful for separating buffer highlights or other plugin specific entities).
 
-## Managing process state 
+## Managing process state
 
 By default, the plugin uses `mpg123` to play an mp3 file. We can execute that utility like so:
 
@@ -74,11 +74,11 @@ local args = {'--loop', '-1', mp3_file}
 mp3_process = vim.fn.jobstart({cmd, unpack(args)}, {detach = true})
 ```
 
-[`vim.fn.jobstart`](https://neovim.io/doc/user/builtin.html#jobstart()) is apart of Neovim's broader "job control" schematic: it allows for plugins and users to control multiple jobs and tasks within Neovim without blocking the current editor instance. It's a great way to perform and manage background tasks or launch CLI tools. And it's what allows you to continue to type in your Neovim editor without having to wait for `mpg123` to finish executing.
+[`vim.fn.jobstart`](<https://neovim.io/doc/user/builtin.html#jobstart()>) is apart of Neovim's broader "job control" schematic: it allows for plugins and users to control multiple jobs and tasks within Neovim without blocking the current editor instance. It's a great way to perform and manage background tasks or launch CLI tools. And it's what allows you to continue to type in your Neovim editor without having to wait for `mpg123` to finish executing.
 
 The `mp3_process` gets assigned a "job ID" which is a Neovim managed identifying integer for that specific job running within that Neovim session. Importantly, this is _not_ the actual system's process ID.
 
-And you might be saying _"John! Why not use [`vim.system`](https://neovim.io/doc/user/lua.html#vim.system())! It's so much better!"_ True, `vim.system` is preferred for running system commands and has built in asynchronous mechanics for running this type of background task without having to deal with Neovim managed job IDs. `vim.system` will even return to you a `vim.SystemObj` which has a PID integer for the real system process, not a job managed by Neovim.
+And you might be saying _"John! Why not use [`vim.system`](<https://neovim.io/doc/user/lua.html#vim.system()>)! It's so much better!"_ True, `vim.system` is preferred for running system commands and has built in asynchronous mechanics for running this type of background task without having to deal with Neovim managed job IDs. `vim.system` will even return to you a `vim.SystemObj` which has a PID integer for the real system process, not a job managed by Neovim.
 
 Well, I'm lazy.
 

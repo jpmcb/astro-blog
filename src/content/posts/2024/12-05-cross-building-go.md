@@ -1,5 +1,5 @@
 ---
-title: "building cross platform Go with \"just\""
+title: 'building cross platform Go with "just"'
 pubDate: 2024-12-05
 isDraft: true
 ---
@@ -50,7 +50,7 @@ bootstrap-docker-buildx:
   docker buildx create
 
 # Builds the Docker container and tags it as "dev"
-build-containers: 
+build-containers:
   #!/usr/bin/env sh
 
   echo "Building container"

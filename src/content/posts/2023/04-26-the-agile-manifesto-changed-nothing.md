@@ -9,7 +9,7 @@ first appeared in 2001, the industry had just finished
 reeling from the catastrophic collapse of the dot-com bubble. Massive amounts of
 capital had swarmed into the tech market, every company was “adopting” the
 internet, and, when the inevitable economic downturn arrived, many software
-engineers lost their jobs. 
+engineers lost their jobs.
 
 Flush with cash due to the low interest rates of 1998 and 1999, the late 90s
 gave rise to a new kind of startup: _the internet startup_. Blinded by the
@@ -26,7 +26,7 @@ very messy, cut-throat, and “process-heavy” place. Many engineers were subje
 to the dreadful Waterfall methodologies of software development: a system of
 creating software that used ironclad requirements which were very difficult to
 change. And fixed deadlines on delivery of software products left little room
-for iteration or integration testing. 
+for iteration or integration testing.
 
 In other engineering fields, Waterfall works just fine: if you’re building a
 bridge, I sure hope you have a list of requirements, measurements, materials,
@@ -107,7 +107,7 @@ Agile remains the backbone. Agile is what gave life to these methods.
 Despite agile seeming like it’s all about process and how to get stuff done, the
 Agile Manifesto is, first and foremost, a response to an industry that was
 falling apart, cannibalizing itself from the inside out, and burning out its
-talent. 
+talent.
 
 At its heart, [The Agile Manifesto is](http://agilemanifesto.org/history.html):
 

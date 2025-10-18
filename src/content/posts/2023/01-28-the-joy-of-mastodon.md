@@ -62,7 +62,7 @@ That's the joy of open source technology
 that you have the power to own, modify, and dictate the direction of.
 
 To get started, you'll need to find a server that you want to join.
-I picked [fosstodon.org](https://fosstodon.org) 
+I picked [fosstodon.org](https://fosstodon.org)
 since its main focus is supporting people in the open source community.
 Browsing the list of [indexed servers](https://joinmastodon.org/servers)
 is a great way to start and find a place that makes sense for you to call home.

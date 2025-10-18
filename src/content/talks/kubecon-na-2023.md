@@ -28,4 +28,4 @@ socially engineered domains fit into the secure software supply-chain, and a
 call to action for how organizations that consume Kubernetes source code can
 strengthen their security posture towards these kinds of supply chain attacks
 (including through verifying signed Kubernetes artifacts, hardened Linux node
-environments, etc). 
+environments, etc).

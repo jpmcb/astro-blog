@@ -42,13 +42,13 @@ social media: the "candy and soda" of modern media consumption.
 [As Cal Newport put it:](https://calnewport.com/on-ultra-processed-content/)
 
 > ... ultra-processed foods are created by first breaking down cheap stock foods
-into their basic elements, and then recombining these ingredients into something
-unnatural but irresistible. Something similar happens with social media content.
-Whereas the stock ingredients for ultra-processed food are found in vast fields
-of cheap corn and soy, social media content draws on vast databases of user-generated
-information — posts, reactions, videos, quips, and memes. Recommendation algorithms
-then sift through this monumental collection of proto-content to find new, hard to
-resist combinations that will appeal to users.
+> into their basic elements, and then recombining these ingredients into something
+> unnatural but irresistible. Something similar happens with social media content.
+> Whereas the stock ingredients for ultra-processed food are found in vast fields
+> of cheap corn and soy, social media content draws on vast databases of user-generated
+> information — posts, reactions, videos, quips, and memes. Recommendation algorithms
+> then sift through this monumental collection of proto-content to find new, hard to
+> resist combinations that will appeal to users.
 
 This same structure applies to "engineering" content: at the bottom are books,
 documentation, research papers, and conference talks. Things that require _a lot_
@@ -77,7 +77,7 @@ The levels of inception reaction-content can get into can be abit mind numbing.
 And, unfortunately, what technical, engineering reaction-content has become isn't really any better:
 instead of watching something, you'll often see people reading something from
 tiers lower in the content pyramid. The typical formula these days for large engineering YouTubers like
-[ThePrimeagen](https://www.youtube.com/@ThePrimeTimeagen) or [Theo](https://www.youtube.com/@t3dotgg) 
+[ThePrimeagen](https://www.youtube.com/@ThePrimeTimeagen) or [Theo](https://www.youtube.com/@t3dotgg)
 is to record a super-cut of themselves (often during a live-stream to ensure the parasocial relationship keeps going full force)
 reading or reacting to some viral blog or post on Hacker News or Reddit. These days, it's very rare to
 find large engineering YouTubers creating content in the 1st or 2nd tier of

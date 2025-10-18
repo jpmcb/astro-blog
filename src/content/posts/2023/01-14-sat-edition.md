@@ -1,4 +1,4 @@
---- 
+---
 title: "So long windows 7!"
 description: "Windows 7 is no more"
 pubDate: 2023-01-15
@@ -16,7 +16,7 @@ you can find [the atom feed here.](https://johncodes.com/index.xml)
 
 ## News
 
-Microsoft ended long term support for Windows 7 this week. 
+Microsoft ended long term support for Windows 7 this week.
 
 This means that both the Windows 7 Professional and Enterprise editions will no
 longer receive any kind of security updates. And while “support” for Windows 7
@@ -41,7 +41,7 @@ rec industry as a mountain guide. I lead rock climbing trips, rafted rivers,
 hiked 14-ers, and bushwacked in the backcountry. And like this story from
 Krista Diamond reflects on, I too faced unprecedented life or death situations
 in the backcountry. But too often, time and time again, I would brush off my
-experiance as  
+experiance as
 
 We as humans are very bad at assessing risk. People don’t conceptualize
 statistics, especially when it pertains to them personally. Whether it’s the
@@ -57,7 +57,7 @@ to use a newest web framework would require we adopt a new database schema
 which entails doing risky and costly migrations” is easier to reason about.
 
 - _Jeff Beck, Guitarist With a Chapter in Rock History, Dies at 78 - The New York
-Times_
+  Times_
 
 When I was 12, I got my first guitar. I always wanted to play like my dad and
 my big brother. I learned the basics from my dad but then (like any teenager

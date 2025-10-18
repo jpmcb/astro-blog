@@ -22,13 +22,13 @@ You probably already have most of these tools installed since they have become
 synonymous with most Neovim configs:
 
 - A newer version of [Neovim](https://github.com/neovim/neovim) -
-At the time of this writing, [the latest version is v0.9.5](https://github.com/neovim/neovim/releases/tag/v0.9.5).
-I typically recommend staying on the latest Neovim version since it gets you the latest
-features that various plugins may take advantage of.
+  At the time of this writing, [the latest version is v0.9.5](https://github.com/neovim/neovim/releases/tag/v0.9.5).
+  I typically recommend staying on the latest Neovim version since it gets you the latest
+  features that various plugins may take advantage of.
 - A package manager - these days, I (and it seems most of the Neovim community)
-typically recommend [Lazy.nvim](https://github.com/folke/lazy.nvim)
+  typically recommend [Lazy.nvim](https://github.com/folke/lazy.nvim)
 - [Treesitter for Neovim](https://github.com/nvim-treesitter/nvim-treesitter) - an essential tool
-for syntax parsing and definitions.
+  for syntax parsing and definitions.
 
 ## Install Treesitter parsers
 
@@ -38,8 +38,6 @@ Depending on your Astro configuration, there may be HTML, Typescript, CSS, JavaS
 In order to get syntax highlighting and parsing, you'll need to install
 a few Treesitter parsers that enable Treesitter to introspect the different
 chunks of an Astro file:
-
-
 
 On the Neovim command palate, first make sure Treesitter is updated:
 

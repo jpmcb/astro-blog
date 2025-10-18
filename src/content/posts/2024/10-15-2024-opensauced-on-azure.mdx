@@ -1,0 +1,148 @@
+---
+title: "OpenSauced on Azure: Lessons learned from a near-zero downtime migration"
+pubDate: 2024-10-15
+---
+
+import Note from "../../../components/Note.astro";
+
+<Note>This post originally appeared on OpenSauced's blog.
+This post is preserved here in its entirety as the Linux Foundation acquired OpenSauced in late 2024</Note>
+
+At the beginning of October, the OpenSauced engineering team completed a
+weeks-long migration of our infrastructure, data, and pipelines to Microsoft
+Azure. Before this move, we had several bespoke container Apps on Digital Ocean
+alongside managed PostgreSQL databases.
+
+This setup worked well for a while and was a great way to bootstrap. But,
+because we lacked GitOps, infrastructure-as-code (IaC) tooling, and a structured
+method for storing secrets in those early days, our app configurations could be
+brittle, prone to breaking during upgrades or releases, and difficult to scale
+in a streamlined manner.
+
+We ultimately decided to migrate our core backend infrastructure from
+DigitalOcean to Azure, consolidating everything into a unified environment. This
+move allowed us to capitalize on our existing Azure Kubernetes Service (AKS)
+infrastructure and fully commit to Kubernetes as our primary service and
+container orchestration platform.
+
+## Azure Kubernetes Service for container runtimes
+
+If you've read any of my previous engineering deep dives (including Technical
+Deep Dive: How We Built the Pizza CLI Using Go and Cobra, How we use Kubernetes
+jobs to scale OpenSSF Scorecard, and How We Saved 10s of Thousands of Dollars
+Deploying Low Cost Open Source AI Technologies At Scale with Kubernetes), you
+know that we already deploy several AI services and core data pipelines on AKS
+(primarily the services that power StarSearch).
+
+To simplify our infrastructure and make the most of our existing compute
+resources in our AKS clusters, we adopted a "monolithic cluster" approach. This
+means we’re deploying all infrastructure, APIs, and services to the same AKS
+clusters, centralizing control, management, deployment, and scaling.
+
+The benefits are clear: we avoid the complexity of multi-cluster management,
+consolidate our networking within a single region, and streamline operations for
+our small, agile engineering team.
+
+However, this approach has trade-offs we may need to tackle in the future. As
+OpenSauced grows and scales, we’ll need to reassess and likely adopt a
+multi-region or multi-cluster strategy to support a globally distributed
+network. This decision was made with a conscious understanding of the
+scalability challenges we may face in the future, but for new, this approach
+gives us the flexibility and simplicity we need.
+
+## Choosing a Kubernetes Ingress controller
+
+With AKS now handling all our backend infrastructure, including public-facing
+APIs, we needed an ingress solution for routing external traffic into our
+clusters. This also required load balancing, firewall management, Let's Encrypt
+certificates for SSL, and security policies.
+
+We chose Traefik as our Kubernetes ingress controller. Traefik, a popular choice
+in the Kubernetes community, is an "application proxy" that offers a rich set of
+features while being easy to set up. With Traefik, what could have been a
+complex, error-prone task became an intuitive and streamlined integration into
+our infrastructure.
+
+## Using Pulumi for infrastructure as code and deployment
+
+A key part of our migration was adopting Pulumi as our infrastructure-as-code
+solution. Before this, our infrastructure setup was a bit ad-hoc, with various
+configurations and third-party services stitched together manually. When we
+needed a new cloud service or we were ready to deploy some new API service, we'd
+piece-meal the different bits together in cloud dashboards and build some custom
+automation in GitHub actions. While this worked in the very early stages of
+OpenSauced, it quickly became brittle and hard to manage at scale or across an
+engineering team.
+
+Pulumi offers several benefits that have already had a noticeable impact on our
+workflows and engineering culture:
+
+- Environment Reproducibility: We can easily create and replicate
+  environments, whether spinning up a new Kubernetes cluster or a full staging
+  environment. It’s as simple as creating a new Pulumi stack.
+
+- Simple, Consistent Deployments: Deployments are straightforward, repeatable,
+  and integrated into our CI/CD pipelines.
+
+- State and Secret Management: Pulumi provides a built-in mechanism for
+  storing state and secrets, which can be securely shared across the entire
+  engineering team.
+
+- GitOps Compatibility: By leveraging Pulumi’s tight integration with Git, we
+  can adopt deeper GitOps workflows, bringing more automation and consistency
+  to our infrastructure management.
+
+Overall, Pulumi has significantly reduced the friction around infrastructure
+management and deploying new services, allowing us to focus on what really
+matters — building OpenSauced!
+
+## Azure Flexible servers for managed Postgres
+
+For the data layer at OpenSauced (including user data, user assets, and GitHub
+repository metadata), we previously used DigitalOcean’s managed PostgreSQL
+service. For our migration to Azure, we opted for Azure Database for PostgreSQL
+with the Flexible Server deployment option.
+
+This service gives us all the benefits of a managed database solution, including
+automated backups, restoration capabilities, and high availability. The bonus
+here is that we can co-locate our data with our AKS clusters in the same region,
+ensuring low-latency networking between our services on-cluster and the
+database.
+
+Looking ahead, as our user base grows, we’ll need to explore data replication
+and distribution to additional regions to enhance availability and redundancy.
+But for now, this managed solution meets our needs and positions us well for
+future scalability.
+
+Hats off to the Azure Postgres team on enabling a smooth and near zero downtime
+migration of our data. All in all, using Azure's provided migration tools,
+moving everything over took less than 5 minutes. We completed the production
+migration with minimal end user impact. Because we used Pulumi to configure all
+our containers on-cluster and also deploy the Postgres flexible servers, we
+could quickly and easily re-deploy our containers with different configurations
+to be ready to use the new databases.
+
+Between our Kubernetes environment, Pulumi IaC tooling, and Azure's sublime
+migration tools, we were able to complete a full production migration
+seamlessly.
+
+## Grafana Observability
+
+As part of this migration, we also made some enhancements to our observability
+stack to ensure that our backend infrastructure is properly monitored. We use
+Grafana for observability, and during the migration, we deployed Grafana Alloy
+on our clusters. Alloy integrates seamlessly with Prometheus for metrics and
+Loki for log aggregation, giving us a powerful observability framework.
+
+With these tools in place, we have a comprehensive view of our system’s health,
+allowing us to monitor performance, detect anomalies, and respond to issues
+before they impact our users. Additionally, our integration with Grafana’s
+on-call and alerting features enable our engineering team to respond to
+incidents and ensure OpenSauced stays healthy.
+
+---
+
+A huge thank you to our Microsoft Azure partners in enabling us to make this
+transition, providing their expertise, and supporting us along the way!!
+
+As always, stay saucy friends!!

@@ -4,7 +4,7 @@ pubDate: 2023-02-25
 isPopular: true
 ---
 
-import Youtube from "../../../components/Youtube.astro"
+import Youtube from "../../../components/Youtube.astro";
 
 <Youtube vidoeId="KoL-2WTlr04" />
 
@@ -48,6 +48,7 @@ and saved me on _several_ occasion from pushing an embarrassing commit message.
 
 Make sure you have a new-ish version of NeoVim.
 I'm running with a newer nightly build, but the latest official release should do the trick.
+
 ```text
 ❯ nvim --version
 NVIM v0.9.0-dev-699+gc752c8536
@@ -56,18 +57,21 @@ NVIM v0.9.0-dev-699+gc752c8536
 In your nvim configuration files, you'll want to set the one of the following options:
 
 - _For those who've ascended to using Lua_:
+
 ```lua
 vim.opt.spelllang = 'en_us'
 vim.opt.spell = true
 ```
 
 - _Or good, ol trusty Vimscript_:
+
 ```vim
 set spelllang=en_us
 set spell
 ```
 
 Alternatively, you can use the command prompt to enable `spell` in your current session:
+
 ```text
 :setlocal spell spelllang=en_us
 ```
@@ -104,9 +108,11 @@ Hit `1` and `<enter>` in the prompt to indicate you want to take the first sugge
 And the word has been fixed!
 
 There's also
+
 ```
 :spellr
 ```
+
 which is the "spell repeater". It repeats the replacement done by `z=`
 for all matched misspellings in the current window.
 So, if there's a word you _frequently_ misspell, using `:spellr` is a quick and easy

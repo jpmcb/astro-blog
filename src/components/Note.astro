@@ -1,0 +1,54 @@
+---
+// Note.astro - A simple note component for blog posts
+---
+
+<div class="note">
+  <div class="note-header">
+    <svg
+      class="note-icon"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <circle cx="12" cy="12" r="10"></circle>
+      <line x1="12" y1="16" x2="12" y2="12"></line>
+      <line x1="12" y1="8" x2="12.01" y2="8"></line>
+    </svg>
+    <strong>Note</strong>
+  </div>
+  <div class="note-content">
+    <slot />
+  </div>
+</div>
+
+<style>
+  .note {
+    background-color: black;
+    border-left: 8px solid #0ea5e9;
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    margin: 1.5rem 0;
+  }
+
+  .note-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+    color: #0369a1;
+  }
+
+  .note-icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .note-content {
+    color: #075985;
+    line-height: 1.6;
+  }
+</style>
