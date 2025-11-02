@@ -7,7 +7,8 @@ import FormattedDate from "../components/FormattedDate.astro";
 
 type Props = CollectionEntry<"posts">["data"];
 
-const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
+const { title, description, pubDate, tags, updatedDate, heroImage } =
+  Astro.props;
 ---
 
 <html lang="en">
@@ -26,6 +27,12 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
             )
           }
         </div>
+
+        {
+          tags?.map((tag: string) => (
+            <span data-pagefind-filter="tags">#{tag} </span>
+          ))
+        }
 
         <div class="prose">
           <div class="title">
@@ -51,28 +58,28 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 </html>
 
 <style>
-  /*.hero-image {*/
-  /*width: 100%;*/
-  /*}*/
-  /*.hero-image img {*/
-  /*display: block;*/
-  /*margin: 0 auto;*/
-  /*border-radius: 12px;*/
-  /*box-shadow: var(--box-shadow);*/
-  /*}*/
-  /*.title {*/
-  /*text-align: left;*/
-  /*line-height: 1;*/
-  /*}*/
-  /*.title h1 {*/
-  /*font-size: 2em;*/
-  /*margin: 0 0 0.5em 0;*/
-  /*}*/
-  /*.date {*/
-  /*color: rgb(var(--gray));*/
-  /*}*/
-  /*.last-updated-on {*/
-  /*font-size: 0.8em;*/
-  /*margin: 0.5em 0 0 0;*/
-  /*}*/
+  .hero-image {
+    width: 100%;
+  }
+  .hero-image img {
+    display: block;
+    margin: 0 auto;
+    border-radius: 12px;
+    box-shadow: var(--box-shadow);
+  }
+  .title {
+    text-align: left;
+    line-height: 1;
+  }
+  .title h1 {
+    font-size: 2em;
+    margin: 0 0 0.5em 0;
+  }
+  .date {
+    color: rgb(var(--gray));
+  }
+  .last-updated-on {
+    font-size: 0.8em;
+    margin: 0.5em 0 0 0;
+  }
 </style>

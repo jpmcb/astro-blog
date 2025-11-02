@@ -7,7 +7,7 @@
     "build": "astro check && astro build && pagefind --site dist && cp -r dist/pagefind public/",
     "preview": "astro preview",
     "astro": "astro",
-    "format": "npx @biomejs/biome format --write"
+    "format": "npx prettier . --write"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.5",

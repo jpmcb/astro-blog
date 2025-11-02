@@ -1,6 +1,7 @@
 ---
 title: "what is an AI agent?"
 pubDate: 2025-01-11
+tags: ["ai", "golang"]
 ---
 
 This year is going to be big for AI.
