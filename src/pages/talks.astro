@@ -1,8 +1,5 @@
 ---
 import { getCollection } from "astro:content";
-import BaseHead from "../components/BaseHead.astro";
-import Footer from "../components/Footer.astro";
-import Header from "../components/Header.astro";
 import Youtube from "../components/Youtube.astro";
 import type { CollectionEntry } from "astro:content";
 import Talk from "../components/Talk.astro";
@@ -22,19 +19,14 @@ const groupedTalks = talks.reduce(
 ---
 
 <BaseLayout title="Talks" description="Talks by John McBride">
-  <main>
-    <p>
-      - speaking inquiries: <a href="mailto:hello.john.codes@gmail.com"
-        >hello.john.codes@gmail.com</a
-      >
-    </p>
-    <!--Probably better to have embedded here ...-->
-    - <a href="https://github.com/jpmcb/talks"
-      >Bio and high quality headshots for events can be found here.</a
+  <p>
+    Speaking inquiries:
+    <a href="mailto:hello.john.codes@gmail.com">hello@johncodes.com</a>. Bio and
+    high quality headshots for events
+    <a href="https://github.com/jpmcb/talks"
+      >can be found in this GitHub repo.</a
     >
-  </main>
-  <hr />
-  <br />
+  </p>
 
   {
     Object.entries(groupedTalks)
@@ -67,14 +59,8 @@ const groupedTalks = talks.reduce(
   }
 
   <style>
-    .contact {
-      margin-bottom: 2em;
-      font-size: 0.9em;
-      color: var(--text-secondary);
-    }
-
     .year-group {
-      margin-bottom: 2em;
+      margin-top: 2em;
     }
 
     .year-group h2 {

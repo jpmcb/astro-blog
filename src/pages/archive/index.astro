@@ -3,9 +3,9 @@ import BaseHead from "../../components/BaseHead.astro";
 import Header from "../../components/Header.astro";
 import Footer from "../../components/Footer.astro";
 import Search from "../../components/Search.astro";
+import PostsRow from "../../components/PostsRow.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../../consts";
 import { getCollection } from "astro:content";
-import "../../styles/post-rows.css";
 
 const posts = (await getCollection("posts"))
   .filter((post) => !post.data.isDraft)
@@ -21,25 +21,10 @@ const posts = (await getCollection("posts"))
     <Header />
     <main>
       <Search />
-      <div class="search-divider post-row"></div>
-      <div class="posts">
-        {
-          posts.map((post) => (
-            <div class="post-row">
-              <a href={`/archive/${post.id}/`}>{post.data.title}</a>
-              <span class="date">
-                {post.data.pubDate.toLocaleDateString("en-us", {
-                  year: "numeric",
-                  month: "short",
-                  day: "numeric",
-                })}
-              </span>
-            </div>
-          ))
-        }
-      </div>
+      <div class="search-divider"></div>
+      <PostsRow posts={posts} />
+      <Footer />
     </main>
-    <Footer />
   </body>
 </html>
 

@@ -80,10 +80,9 @@ going on across the open source ecosystem.
 There’s a lot more that could be said about RAG and vector search - I recommend
 the following resources:
 
-
-* [A beginner's guide to building a Retrieval Augmented Generation (RAG) application from scratch](https://learnbybuilding.ai/tutorials/rag-from-scratch)
-* [Vector databases in generative AI applications](https://stackoverflow.blog/2023/10/09/from-prototype-to-production-vector-databases-in-generative-ai-applications/)
-* [What is Cosine Similarity: A Comprehensive Guide](https://www.datastax.com/guides/what-is-cosine-similarity)
+- [A beginner's guide to building a Retrieval Augmented Generation (RAG) application from scratch](https://learnbybuilding.ai/tutorials/rag-from-scratch)
+- [Vector databases in generative AI applications](https://stackoverflow.blog/2023/10/09/from-prototype-to-production-vector-databases-in-generative-ai-applications/)
+- [What is Cosine Similarity: A Comprehensive Guide](https://www.datastax.com/guides/what-is-cosine-similarity)
 
 ## Running open source inference engines locally
 
@@ -142,7 +141,7 @@ multi-client inference engines!
 To run vLLM locally, you’ll need a linux system and a python runtime:
 
 ```sh
-python -m vllm.entrypoints.openai.api_server \ 
+python -m vllm.entrypoints.openai.api_server \
   --model mistralai/Mistral-7B-Instruct-v0.2
 ```
 
@@ -152,35 +151,36 @@ port 8000:
 ```sh
 curl http://localhost:8000/v1/models
 ```
+
 ```json5
 {
-  "object": "list",
-  "data": [
+  object: "list",
+  data: [
     {
-      "id": "mistralai/Mistral-7B-Instruct-v0.2",
-      "object": "model",
-      "created": 1715528945,
-      "owned_by": "vllm",
-      "root": "mistralai/Mistral-7B-Instruct-v0.2",
-      "parent": null,
-      "permission": [
+      id: "mistralai/Mistral-7B-Instruct-v0.2",
+      object: "model",
+      created: 1715528945,
+      owned_by: "vllm",
+      root: "mistralai/Mistral-7B-Instruct-v0.2",
+      parent: null,
+      permission: [
         {
-          "id": "modelperm-020c373d027347aab5ffbb73cc20a688",
-          "object": "model_permission",
-          "created": 1715528945,
-          "allow_create_engine": false,
-          "allow_sampling": true,
-          "allow_logprobs": true,
-          "allow_search_indices": false,
-          "allow_view": true,
-          "allow_fine_tuning": false,
-          "organization": "*",
-          "group": null,
-          "is_blocking": false
-        }
-      ]
-    }
-  ]
+          id: "modelperm-020c373d027347aab5ffbb73cc20a688",
+          object: "model_permission",
+          created: 1715528945,
+          allow_create_engine: false,
+          allow_sampling: true,
+          allow_logprobs: true,
+          allow_search_indices: false,
+          allow_view: true,
+          allow_fine_tuning: false,
+          organization: "*",
+          group: null,
+          is_blocking: false,
+        },
+      ],
+    },
+  ],
 }
 ```
 
@@ -204,7 +204,7 @@ curl localhost:8000/v1/chat/completions \
   -H "Content-Type: application/json" \
   -d '{
     "model": "TheBloke/Mistral-7B-Instruct-v0.2-AWQ",
-    "messages": [ 
+    "messages": [
       {
         "role": "user",
         "content": "Who won the world series in 2020?"
@@ -215,27 +215,27 @@ curl localhost:8000/v1/chat/completions \
 
 ```json5
 {
-  "id": "cmpl-9f8b1a17ee814b5db6a58fdfae107977",
-  "object": "chat.completion",
-  "created": 1715529007,
-  "model": "mistralai/Mistral-7B-Instruct-v0.2",
-  "choices": [
+  id: "cmpl-9f8b1a17ee814b5db6a58fdfae107977",
+  object: "chat.completion",
+  created: 1715529007,
+  model: "mistralai/Mistral-7B-Instruct-v0.2",
+  choices: [
     {
-      "index": 0,
-      "message": {
-        "role": "assistant",
-        "content": "The Major League Baseball (MLB) World Series in 2020 was won by the Tampa Bay Rays. They defeated the Los Angeles Dodgers in six games to secure their first-ever World Series title. The series took place from October 20 to October 27, 2020, at Globe Life Field in Arlington, Texas.",
-        "logprobs": null,
-        "finish_reason": "stop",
-        "stop_reason": null 
-      }
-    }
+      index: 0,
+      message: {
+        role: "assistant",
+        content: "The Major League Baseball (MLB) World Series in 2020 was won by the Tampa Bay Rays. They defeated the Los Angeles Dodgers in six games to secure their first-ever World Series title. The series took place from October 20 to October 27, 2020, at Globe Life Field in Arlington, Texas.",
+        logprobs: null,
+        finish_reason: "stop",
+        stop_reason: null,
+      },
+    },
   ],
-  "usage": {
-    "prompt_tokens": 21,
-    "total_tokens": 136,
-    "completion_tokens": 115
-  }
+  usage: {
+    prompt_tokens: 21,
+    total_tokens: 136,
+    completion_tokens: 115,
+  },
 }
 ```
 
@@ -253,11 +253,12 @@ up an internal AI service that looked like OpenAI's API relatively seamless.
 
 In the end, the architecture for this kind of deployment looks like this:
 
-
 1. Deploy any number of Kubernetes nodes with any number of GPUs on each node
    into a nodepool
-  * Install GPU drivers per the managed Kubernetes service provider
-    instructions. [We're using Azure AKS so they provide these instructions for utilizing GPUs on cluster](https://learn.microsoft.com/en-us/azure/aks/gpu-cluster?tabs=add-ubuntu-gpu-node-pool)
+
+- Install GPU drivers per the managed Kubernetes service provider
+  instructions. [We're using Azure AKS so they provide these instructions for utilizing GPUs on cluster](https://learn.microsoft.com/en-us/azure/aks/gpu-cluster?tabs=add-ubuntu-gpu-node-pool)
+
 2. Deploy a daemonset for vLLM to run on each node with a GPU
 3. Deploy a Kubernetes service to load balance internal requests to vLLM's
    OpenAI compatible API
@@ -289,28 +290,28 @@ spec:
         name: nvidia-device-plugin-ds
     spec:
       containers:
-      - image: mcr.microsoft.com/oss/nvidia/k8s-device-plugin:v0.14.1
-        name: nvidia-device-plugin-ctr
-        securityContext:
-          capabilities:
-            drop:
-            - All
-        volumeMounts:
-        - mountPath: /var/lib/kubelet/device-plugins
-          name: device-plugin
+        - image: mcr.microsoft.com/oss/nvidia/k8s-device-plugin:v0.14.1
+          name: nvidia-device-plugin-ctr
+          securityContext:
+            capabilities:
+              drop:
+                - All
+          volumeMounts:
+            - mountPath: /var/lib/kubelet/device-plugins
+              name: device-plugin
       nodeSelector:
         accelerator: nvidia
       tolerations:
-      - key: CriticalAddonsOnly
-        operator: Exists
-      - effect: NoSchedule
-        key: nvidia.com/gpu
-        operator: Exists
+        - key: CriticalAddonsOnly
+          operator: Exists
+        - effect: NoSchedule
+          key: nvidia.com/gpu
+          operator: Exists
       volumes:
-      - hostPath:
-          path: /var/lib/kubelet/device-plugins
-          type: ""
-        name: device-plugin
+        - hostPath:
+            path: /var/lib/kubelet/device-plugins
+            type: ""
+          name: device-plugin
 ```
 
 This daemonset installs the Nvidia device plugin pod on each node that has the
@@ -370,32 +371,32 @@ spec:
         app: vllm
     spec:
       containers:
-      - args:
-        - --model
-        - mistralai/Mistral-7B-Instruct-v0.2
-        - --gpu-memory-utilization
-        - "0.95"
-        - --enforce-eager
-        env:
-        - name: HUGGING_FACE_HUB_TOKEN
-          valueFrom:
-            secretKeyRef:
-              key: HUGGINGFACE_TOKEN
-              name: vllm-huggingface-token
-        image: vllm/vllm-openai:latest
-        name: vllm
-        ports:
-        - containerPort: 8000
-          protocol: TCP
-        resources:
-          limits:
-            nvidia.com/gpu: "1"
+        - args:
+            - --model
+            - mistralai/Mistral-7B-Instruct-v0.2
+            - --gpu-memory-utilization
+            - "0.95"
+            - --enforce-eager
+          env:
+            - name: HUGGING_FACE_HUB_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  key: HUGGINGFACE_TOKEN
+                  name: vllm-huggingface-token
+          image: vllm/vllm-openai:latest
+          name: vllm
+          ports:
+            - containerPort: 8000
+              protocol: TCP
+          resources:
+            limits:
+              nvidia.com/gpu: "1"
       nodeSelector:
         accelerator: nvidia
       tolerations:
-      - effect: NoSchedule
-        key: nvidia.com/gpu
-        operator: Exists
+        - effect: NoSchedule
+          key: nvidia.com/gpu
+          operator: Exists
 ```
 
 Let’s break down what’s going on here:
@@ -419,7 +420,7 @@ select for these pods and provide an agnostic way to hit a load balanced
 endpoint for any of the various deployed vLLM pods on port 8000. Then, we use a
 nvidia.com/gpu resource (which is provided as a node level resource by the
 Nvidia device plugin daemonset - again, depending on your managed Kubernetes
-provider and how you installed the GPU drivers, this may varry).  And finally,
+provider and how you installed the GPU drivers, this may varry). And finally,
 we provide the same node selector and taint tolerations to ensure that vLLM runs
 only on the GPU nodes! Now, when we deploy this, we’ll see the vLLM daemonset
 has successfully deployed onto each of the GPU nodes:
@@ -444,9 +445,9 @@ metadata:
   namespace: vllm-ns
 spec:
   ports:
-  - port: 80
-    protocol: TCP
-    targetPort: 8000
+    - port: 80
+      protocol: TCP
+      targetPort: 8000
   selector:
     app: vllm
   sessionAffinity: None
@@ -480,27 +481,27 @@ is the sky blue?":
 
 ```json5
 {
-    "id": "cmpl-76cf74f9b05c4026aef7d64c06c681c4",
-    "object": "chat.completion",
-    "created": 1715533000,
-    "model": "mistralai/Mistral-7B-Instruct-v0.2",
-    "choices": [
-        {
-            "index": 0,
-            "message": {
-                "role": "assistant",
-                "content": "The color of the sky appears blue due to a natural phenomenon called Rayleigh scattering. As sunlight reaches Earth's atmosphere, it interacts with molecules and particles in the air, such as nitrogen and oxygen. These particles scatter short-wavelength light, like blue and violet light, more than longer wavelengths, like red, orange, and yellow. However, we perceive the sky as blue and not violet because our eyes are more sensitive to blue light and because sunlight reaches us more abundantly in the blue part of the spectrum.\n\nAdditionally, some of the violet light gets absorbed by the ozone layer in the stratosphere, which prevents us from seeing a violet sky. At sunrise and sunset, the sky can take on hues of red, orange, and pink due to the scattering of sunlight through the Earth's atmosphere at those angles."
-            },
-            "logprobs": null,
-            "finish_reason": "stop",
-            "stop_reason": null
-        }
-    ],
-    "usage": {
-        "prompt_tokens": 15,
-        "total_tokens": 201,
-        "completion_tokens": 186
-    }
+  id: "cmpl-76cf74f9b05c4026aef7d64c06c681c4",
+  object: "chat.completion",
+  created: 1715533000,
+  model: "mistralai/Mistral-7B-Instruct-v0.2",
+  choices: [
+    {
+      index: 0,
+      message: {
+        role: "assistant",
+        content: "The color of the sky appears blue due to a natural phenomenon called Rayleigh scattering. As sunlight reaches Earth's atmosphere, it interacts with molecules and particles in the air, such as nitrogen and oxygen. These particles scatter short-wavelength light, like blue and violet light, more than longer wavelengths, like red, orange, and yellow. However, we perceive the sky as blue and not violet because our eyes are more sensitive to blue light and because sunlight reaches us more abundantly in the blue part of the spectrum.\n\nAdditionally, some of the violet light gets absorbed by the ozone layer in the stratosphere, which prevents us from seeing a violet sky. At sunrise and sunset, the sky can take on hues of red, orange, and pink due to the scattering of sunlight through the Earth's atmosphere at those angles.",
+      },
+      logprobs: null,
+      finish_reason: "stop",
+      stop_reason: null,
+    },
+  ],
+  usage: {
+    prompt_tokens: 15,
+    total_tokens: 201,
+    completion_tokens: 186,
+  },
 }
 ```
 

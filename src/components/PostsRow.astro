@@ -1,0 +1,76 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  posts: CollectionEntry<"posts">[];
+}
+
+const { posts } = Astro.props;
+---
+
+<div class="posts">
+  {
+    posts.map((post) => (
+      <div class="post-row">
+        <span class="date">
+          {post.data.pubDate
+            .toLocaleDateString("en-us", {
+              year: "numeric",
+              month: "short",
+              day: "numeric",
+            })
+            .toLowerCase()}
+        </span>
+        <div class="title-container">
+          {post.data.isPopular && <i class="fas fa-star" />}
+          <a href={`/archive/${post.id}/`}>{post.data.title}</a>
+        </div>
+      </div>
+    ))
+  }
+</div>
+
+<style>
+  .title-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5em; /* Space between i icons and title */
+    flex: 1; /* Allow it to grow and push date to the right */
+    min-width: 0; /* Allow text to shrink/wrap properly */
+  }
+
+  .post-row {
+    display: flex;
+    padding: 0.3em 0;
+    /*border-bottom: 1px solid var(--border);*/
+    gap: 1em; /* Add space between title and date */
+  }
+
+  .date {
+    min-width: 110px;
+
+    flex-shrink: 0;
+    color: var(--text-secondary);
+    font-size: 0.9em;
+    white-space: nowrap; /* Prevent date from wrapping */
+  }
+
+  /* Mobile styles */
+  @media (max-width: 600px) {
+    .post-row {
+      flex-direction: column;
+      gap: 0.3em;
+      padding: 0.6em 0;
+    }
+
+    .date {
+      min-width: auto;
+      font-size: 0.85em;
+    }
+  }
+
+  .fa-star {
+    flex-shrink: 0;
+    color: #eab308;
+  }
+</style>

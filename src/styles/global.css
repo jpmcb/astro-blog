@@ -1,38 +1,43 @@
 /* Default, light theme colors */
 :root {
-  --accent: #2337ff;
-  --accent-dark: #000d8a;
-  --background: #ffffff;
-  --background-gradient-from: rgba(229, 233, 240, 0.5);
-  --text-main: #1e1e1e;
-  --text-secondary: #4a5568;
-  --card-background: #ffffff;
-  --code-background: #f4f4f4;
-  --code-text: #1a1a1a;
-  --border: #e2e8f0;
+  /* Light to dark palette */
+  --bright-snow: #f8f9fa;
+  --platinum: #e9ecef;
+  --alabaster-grey: #dee2e6;
+  --pale-slate: #ced4da;
+  --pale-slate-2: #adb5bd;
+  --slate-grey: #6c757d;
+  --iron-grey: #495057;
+  --gunmetal: #343a40;
+  --carbon-black: #212529;
+
+  /* Semantic colors - Light theme */
+  --accent: var(--iron-grey);
+  --accent-dark: var(--carbon-black);
+  --background: var(--bright-snow);
+  --text-main: var(--carbon-black);
+  --text-secondary: var(--iron-grey);
+  --border: var(--alabaster-grey);
   --link: var(--accent);
 }
 
 /* Dark theme colors */
 :root.dark {
-  --accent: #60a5fa;
-  --accent-dark: #3b82f6;
-  --background: #0f172a;
-  --background-gradient-from: rgba(17, 24, 39, 0.5);
-  --text-main: #e2e8f0;
-  --text-secondary: #cbd5e9;
-  --card-background: #1e293b;
-  --code-background: #282c34;
-  --code-text: #e2e8f0;
-  --border: #334155;
+  --accent: var(--bright-snow);
+  --accent-dark: var(--platinum);
+  --background: var(--carbon-black);
+  --text-main: var(--bright-snow);
+  --text-secondary: var(--pale-slate);
+  --card-background: var(--carbon-black);
+  --border: var(--gunmetal);
   --link: var(--accent);
 
   /* for Pagefind dark mode transition */
-  --pagefind-ui-primary: #eeeeee;
-  --pagefind-ui-text: #eeeeee;
-  --pagefind-ui-background: #152028;
-  --pagefind-ui-border: #152028;
-  --pagefind-ui-tag: #152028;
+  --pagefind-ui-primary: var(--bright-snow);
+  --pagefind-ui-text: var(--platinum);
+  --pagefind-ui-background: var(--gunmetal);
+  --pagefind-ui-border: var(--iron-grey);
+  --pagefind-ui-tag: var(--platinum);
 }
 
 /* registers the Berkeley Mono, custom nerd fonts from included compiled woff */
@@ -91,11 +96,22 @@ h6 {
 
 a {
   color: var(--link);
-  text-decoration: none;
+  /*text-decoration: none;*/
+  text-decoration: underline dotted var(--link);
+  text-decoration-thickness: 1px;
+  text-decoration-skip-ink: auto;
+  /*border-bottom: 1px dotted var(--link);*/
+
+  /* Prevent very long links from breaking layout */
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  hyphens: auto;
 }
 
 a:hover {
-  color: var(--accent);
+  /*border-bottom-style: solid;*/
+  text-decoration-style: solid;
+  color: var(--accent-dark);
 }
 
 table {

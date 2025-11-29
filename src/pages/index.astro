@@ -2,25 +2,13 @@
 import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
+import PostsRow from "../components/PostsRow.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 import { getCollection } from "astro:content";
-import "../styles/post-rows.css";
 
 const latestPosts = (await getCollection("posts"))
   .filter((post) => !post.data.isDraft)
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-  .slice(0, 5);
-
-const popularPosts = (await getCollection("posts"))
-  .filter((post) => !post.data.isDraft)
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-  .filter((post) => post.data.isPopular)
-  .slice(0, 5);
-
-const favPosts = (await getCollection("posts"))
-  .filter((post) => !post.data.isDraft)
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-  .filter((post) => post.data.isFav)
   .slice(0, 5);
 ---
 
@@ -32,66 +20,31 @@ const favPosts = (await getCollection("posts"))
   <body>
     <Header />
     <main>
+      <p>
+        Currently: Staff software engineer at Zuplo. Hosting the Open Source
+        Ready podcast. Maintaining various open source projects including
+        spf13/cobra.
+      </p>
+      <p>
+        Previously: VP of Infrastructure and AI Engineering at the Linux
+        Foundation, head of infrastructure at OpenSauced (acquired by the Linux
+        Foundation), software engineer at AWS, VMWare, Pivotal, and Compassion
+        International.
+      </p>
       <div class="title-posts">
-        <h3>latest</h3>
-        <div class="posts">
-          {
-            latestPosts.map((post) => (
-              <div class="post-row">
-                <a href={`/archive/${post.id}/`}>{post.data.title}</a>
-                <span class="date">
-                  {post.data.pubDate.toLocaleDateString("en-us", {
-                    year: "numeric",
-                    month: "short",
-                    day: "numeric",
-                  })}
-                </span>
-              </div>
-            ))
-          }
-        </div>
-      </div>
+        <h3>
+          <a href="/archive">latest posts<a></a></a>
+        </h3>
 
-      <div class="title-posts">
-        <h3>popular posts</h3>
-        <div class="posts">
-          {
-            popularPosts.map((post) => (
-              <div class="post-row">
-                <a href={`/archive/${post.id}/`}>{post.data.title}</a>
-                <span class="date">
-                  {post.data.pubDate.toLocaleDateString("en-us", {
-                    year: "numeric",
-                    month: "short",
-                    day: "numeric",
-                  })}
-                </span>
-              </div>
-            ))
-          }
-        </div>
+        <PostsRow posts={latestPosts} />
       </div>
-
-      <div class="title-posts">
-        <h3>my favorites</h3>
-        <div class="posts">
-          {
-            favPosts.map((post) => (
-              <div class="post-row">
-                <a href={`/archive/${post.id}/`}>{post.data.title}</a>
-                <span class="date">
-                  {post.data.pubDate.toLocaleDateString("en-us", {
-                    year: "numeric",
-                    month: "short",
-                    day: "numeric",
-                  })}
-                </span>
-              </div>
-            ))
-          }
-        </div>
-      </div>
+      <Footer />
     </main>
-    <Footer />
   </body>
 </html>
+
+<style>
+  .title-posts {
+    margin-top: 1.5em;
+  }
+</style>
