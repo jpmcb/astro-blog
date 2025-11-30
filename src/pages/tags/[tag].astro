@@ -1,0 +1,54 @@
+---
+import { getCollection } from "astro:content";
+import type { CollectionEntry } from "astro:content";
+import BaseLayout from "../BaseLayout.astro";
+import PostsRow from "../../components/PostsRow.astro";
+
+type Post = CollectionEntry<"posts">;
+
+export async function getStaticPaths() {
+  const allPosts = (await getCollection("posts")).filter(
+    (post) => !post.data.isDraft,
+  );
+
+  // Collect all unique tags
+  const tags = new Set<string>();
+  for (const post of allPosts) {
+    for (const tag of post.data.tags ?? []) {
+      tags.add(tag);
+    }
+  }
+
+  // Create a path for each tag
+  return [...tags].map((tag) => ({
+    params: { tag },
+    props: {
+      posts: allPosts
+        .filter((post) => post.data.tags?.includes(tag))
+        .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()),
+    },
+  }));
+}
+
+const { tag } = Astro.params;
+const { posts } = Astro.props as { posts: Post[] };
+---
+
+<BaseLayout title={`Posts tagged #${tag}`} description="">
+  <div class="back-section">
+    <a href="/tags"><i class="fad fa-backward"></i>all tags</a>
+  </div>
+
+  <h1>#{tag}</h1>
+  <PostsRow posts={posts} />
+</BaseLayout>
+
+<style>
+  .back-section {
+    margin-bottom: 30px;
+  }
+
+  .fa-backward {
+    padding-right: 15px;
+  }
+</style>

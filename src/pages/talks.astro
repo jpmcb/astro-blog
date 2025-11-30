@@ -19,15 +19,6 @@ const groupedTalks = talks.reduce(
 ---
 
 <BaseLayout title="Talks" description="Talks by John McBride">
-  <p>
-    Speaking inquiries:
-    <a href="mailto:hello.john.codes@gmail.com">hello@johncodes.com</a>. Bio and
-    high quality headshots for events
-    <a href="https://github.com/jpmcb/talks"
-      >can be found in this GitHub repo.</a
-    >
-  </p>
-
   {
     Object.entries(groupedTalks)
       .sort(([yearA], [yearB]) => Number(yearB) - Number(yearA))

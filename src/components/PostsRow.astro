@@ -12,6 +12,7 @@ const { posts } = Astro.props;
   {
     posts.map((post) => (
       <div class="post-row">
+        <i class="fas fa-link" />
         <span class="date">
           {post.data.pubDate
             .toLocaleDateString("en-us", {
@@ -31,19 +32,16 @@ const { posts } = Astro.props;
 </div>
 
 <style>
-  .title-container {
-    display: flex;
-    align-items: center;
-    gap: 0.5em; /* Space between i icons and title */
-    flex: 1; /* Allow it to grow and push date to the right */
-    min-width: 0; /* Allow text to shrink/wrap properly */
-  }
-
   .post-row {
     display: flex;
+    align-items: center;
     padding: 0.3em 0;
+
     /*border-bottom: 1px solid var(--border);*/
     gap: 1em; /* Add space between title and date */
+
+    flex: 1; /* Allow it to grow and push date to the right */
+    min-width: 0; /* Allow text to shrink/wrap properly */
   }
 
   .date {
@@ -53,20 +51,6 @@ const { posts } = Astro.props;
     color: var(--text-secondary);
     font-size: 0.9em;
     white-space: nowrap; /* Prevent date from wrapping */
-  }
-
-  /* Mobile styles */
-  @media (max-width: 600px) {
-    .post-row {
-      flex-direction: column;
-      gap: 0.3em;
-      padding: 0.6em 0;
-    }
-
-    .date {
-      min-width: auto;
-      font-size: 0.85em;
-    }
   }
 
   .fa-star {

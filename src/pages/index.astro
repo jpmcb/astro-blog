@@ -1,7 +1,5 @@
 ---
-import BaseHead from "../components/BaseHead.astro";
-import Header from "../components/Header.astro";
-import Footer from "../components/Footer.astro";
+import BaseLayout from "./BaseLayout.astro";
 import PostsRow from "../components/PostsRow.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 import { getCollection } from "astro:content";
@@ -9,39 +7,54 @@ import { getCollection } from "astro:content";
 const latestPosts = (await getCollection("posts"))
   .filter((post) => !post.data.isDraft)
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-  .slice(0, 5);
+  .slice(0, 4);
 ---
 
 <!doctype html>
-<html lang="en">
-  <head>
-    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-  </head>
-  <body>
-    <Header />
-    <main>
-      <p>
-        Currently: Staff software engineer at Zuplo. Hosting the Open Source
-        Ready podcast. Maintaining various open source projects including
-        spf13/cobra.
-      </p>
-      <p>
-        Previously: VP of Infrastructure and AI Engineering at the Linux
-        Foundation, head of infrastructure at OpenSauced (acquired by the Linux
-        Foundation), software engineer at AWS, VMWare, Pivotal, and Compassion
-        International.
-      </p>
-      <div class="title-posts">
-        <h3>
-          <a href="/archive">latest posts<a></a></a>
-        </h3>
+<BaseLayout title=`${SITE_TITLE}` description=`${SITE_DESCRIPTION}`>
+  <div class="title-posts">
+    <h3>
+      <a href="/archive">latest posts</a>
+    </h3>
+  </div>
 
-        <PostsRow posts={latestPosts} />
-      </div>
-      <Footer />
-    </main>
-  </body>
-</html>
+  <PostsRow posts={latestPosts} />
+
+  <div class="title-posts">
+    <h3>
+      <a href="/talks">latest talks</a>
+    </h3>
+
+    <p>
+      Speaking inquiries:
+      <a href="mailto:hello@johncodes.com">hello@johncodes.com</a>. Bio and high
+      quality headshots for events
+      <a href="https://github.com/jpmcb/talks"
+        >can be found in this GitHub repo.</a
+      >
+    </p>
+  </div>
+
+  <div class="title-posts">
+    <h3>
+      <a href="/about">about</a>
+    </h3>
+
+    <p>
+      Staff software engineer at Zuplo. Hosting the
+      <a href="https://www.heavybit.com/library/podcasts/open-source-ready"
+        >Open Source Ready podcast</a
+      >. Maintaining various open source projects including
+      <a href="https://github.com/spf13/cobra">spf13/cobra</a>.
+    </p>
+  </div>
+
+  <div class="title-posts">
+    <h3>
+      <a href="/public-keys.txt">public keys</a>
+    </h3>
+  </div>
+</BaseLayout>
 
 <style>
   .title-posts {

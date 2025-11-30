@@ -1,0 +1,49 @@
+---
+import { getCollection } from "astro:content";
+import type { CollectionEntry } from "astro:content";
+import PostsRow from "./PostsRow.astro";
+
+type Post = CollectionEntry<"posts">;
+
+const tagsMap = new Map<string, Post[]>();
+
+const allPosts = (await getCollection("posts"))
+  .filter((post) => !post.data.isDraft)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+// Build the tags map
+for (const post of allPosts) {
+  const tags = post.data.tags ?? [];
+  for (const tag of tags) {
+    const existing = tagsMap.get(tag) ?? [];
+    existing.push(post);
+    tagsMap.set(tag, existing);
+  }
+}
+
+// Sort tags alphabetically
+const sortedTags = [...tagsMap.keys()].sort((a, b) =>
+  a.toLowerCase().localeCompare(b.toLowerCase()),
+);
+---
+
+<div class="tags">
+  {
+    sortedTags.map((tag) => (
+      <div class="tag-section">
+        <h3>
+          <a href={`/tags/${tag}`}>#{tag}</a>
+        </h3>
+        <PostsRow posts={tagsMap.get(tag) ?? []} />
+      </div>
+    ))
+  }
+</div>
+
+<style>
+  .tag-section {
+    padding-bottom: 10px;
+    margin-bottom: 25px;
+    border-bottom: 1px solid var(--border);
+  }
+</style>

@@ -96,11 +96,11 @@ h6 {
 
 a {
   color: var(--link);
-  /*text-decoration: none;*/
-  text-decoration: underline dotted var(--link);
-  text-decoration-thickness: 1px;
+  text-decoration-line: underline;
+  text-decoration-style: dotted;
+  text-decoration-thickness: 0.8px;
   text-decoration-skip-ink: auto;
-  /*border-bottom: 1px dotted var(--link);*/
+  text-underline-offset: 3px;
 
   /* Prevent very long links from breaking layout */
   overflow-wrap: break-word;
