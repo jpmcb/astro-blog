@@ -1,0 +1,23 @@
+---
+import "./style.css";
+
+interface Props {
+  name?: string;
+  image?: string;
+}
+
+const { name, image } = Astro.props;
+---
+
+<div class="dialog-right">
+  <div class="dialog-head" title={`${name} says:`}>
+    {
+      image && (
+        <img src={image} alt={name} width="42" height="42" loading="lazy" />
+      )
+    }
+  </div>
+  <div class="dialog-text">
+    <slot />
+  </div>
+</div>

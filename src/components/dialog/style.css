@@ -1,0 +1,71 @@
+.dialog-right,
+.dialog-left {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+    align-items: flex-end;
+}
+
+.dialog-right {
+  justify-content: flex-end;
+}
+
+.dialog-head img {
+  border-radius: 70%;
+}
+
+.dialog-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.dialog-speaker {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin: 0;
+    padding-left: 0.5rem;
+}
+
+.dialog-text {
+  color: white;
+  padding: 0.25rem 1rem;
+  border-radius: 1.25rem;
+  max-width: 60%;
+  position: relative;
+}
+
+.dialog-left .dialog-text {
+  background: rgb(59, 59, 61);
+}
+
+.dialog-right .dialog-text {
+  background: rgb(78, 131, 247);
+}
+
+/* clip-path for left chat bubble tail */
+.dialog-left .dialog-text::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: -8px;
+  width: 18px;
+  height: 20px;
+  background: rgb(59, 59, 61);
+  border-bottom-right-radius: 8px;
+  clip-path: path("M 0 16 Q 10 16, 16 0 L 16 16 Z");
+}
+
+/* clip-path for right chat bubble tail */
+.dialog-right .dialog-text::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  right: -8px;
+  width: 18px;
+  height: 20px;
+  background: rgb(78, 131, 247);
+  border-bottom-left-radius: 8px;
+  clip-path: path("M 0 0 Q 10 16, 16 16 L 0 16 Z");
+}
