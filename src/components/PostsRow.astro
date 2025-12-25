@@ -14,13 +14,9 @@ const { posts } = Astro.props;
       <div class="post-row">
         <i class="fas fa-link" />
         <span class="date">
-          {post.data.pubDate
-            .toLocaleDateString("en-us", {
-              year: "numeric",
-              month: "short",
-              day: "numeric",
-            })
-            .toLowerCase()}
+          {String(post.data.pubDate.getMonth() + 1).padStart(2, "0")}.
+          {String(post.data.pubDate.getDate()).padStart(2, "0")}.
+          {post.data.pubDate.getFullYear()}
         </span>
         <div class="title-container">
           {post.data.isPopular && <i class="fas fa-star" />}
@@ -45,12 +41,11 @@ const { posts } = Astro.props;
   }
 
   .date {
-    min-width: 110px;
-
     flex-shrink: 0;
     color: var(--text-secondary);
+    font-family: monospace;
     font-size: 0.9em;
-    white-space: nowrap; /* Prevent date from wrapping */
+    white-space: nowrap;
   }
 
   .fa-star {

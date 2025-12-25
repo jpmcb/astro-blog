@@ -2,22 +2,22 @@
 import "./style.css";
 
 interface Props {
-    name?: string;
-    imageSrc?: string;
+  name?: string;
+  imageSrc?: string;
 }
 
 const { name, imageSrc } = Astro.props;
 ---
 
 <div class="dialog-left">
-    <div class="dialog-head" title={`${name} says:`}>
-        <!--{imageSrc && <img src=`${imageSrc}` alt={name} width="42" height="42" />}-->
-    </div>
+  <div class="dialog-head" title={`${name} says:`}>
+    <!--{imageSrc && <img src=`${imageSrc}` alt={name} width="42" height="42" />}-->
+  </div>
 
-    <div class="dialog-content">
-        {name && <p class="dialog-speaker">{name}</p>}
-        <div class="dialog-text">
-            <slot />
-        </div>
+  <div class="dialog-content">
+    {name && <p class="dialog-speaker">{name}</p>}
+    <div class="dialog-text">
+      <slot />
     </div>
+  </div>
 </div>
