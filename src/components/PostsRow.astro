@@ -14,9 +14,7 @@ const { posts } = Astro.props;
       <div class="post-row">
         <i class="fas fa-link" />
         <span class="date">
-          {String(post.data.pubDate.getMonth() + 1).padStart(2, "0")}.
-          {String(post.data.pubDate.getDate()).padStart(2, "0")}.
-          {post.data.pubDate.getFullYear()}
+          {`${String(post.data.pubDate.getMonth() + 1).padStart(2, "0")}.${String(post.data.pubDate.getDate()).padStart(2, "0")}.${post.data.pubDate.getFullYear()}`}
         </span>
         <div class="title-container">
           {post.data.isPopular && <i class="fas fa-star" />}
