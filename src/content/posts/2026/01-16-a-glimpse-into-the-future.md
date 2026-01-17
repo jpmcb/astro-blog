@@ -1,0 +1,177 @@
+---
+title: "Gas Town is a glimpse into the future"
+pubDate: 2026-01-16
+---
+
+When I first encountered Gas Town, I was already familiar with some of Steve Yegge's
+work, especially his [infamous 2011, accidentally public, Google memo](https://courses.cs.washington.edu/courses/cse452/23wi/papers/yegge-platform-rant.html).
+In it, Yegge recounted what Jeff Bezos had mandated at Amazon in 2002:
+every service from every team everywhere within Amazon must be exposed as an API.
+This mandate would eventually be what led to AWS's emergence, invention, and market dominance.
+It's no mistake that the AWS platform is the way it is because of this API and team service-oriented architecture.
+
+Yegge said:
+
+> The Golden Rule of Platforms, “Eat Your Own Dogfood”, can be rephrased as “Start with a Platform, and Then Use it for Everything.”
+> You can’t just bolt it on later.
+> Certainly not easily at any rate – ask anyone who worked on platformizing MS Office.
+> Or anyone who worked on platformizing Amazon.
+> If you delay it, it’ll be ten times as much work as just doing it correctly up front.
+> You can’t cheat.
+
+Even before the commodification of the cloud, Kubernetes, containers, and platform engineering,
+Yegge had a keen understanding of where the industry had been, where it was, and the direction it was going.
+He knew that the "platform" was of the utmost importance for future business success
+and that bolting it on after the fact would be excruciatingly painful.
+
+When Yegge launched Gas Town last week, a multi-agent harness backed by [beads](https://github.com/steveyegge/beads),
+his open source agentic "task" tracking system, it's no surprise that the
+AI engineering world took notice.
+When Yegge peers into the future, he seems to have a unique perspective with a proven track record
+for seeing something the rest don't.
+
+Gas Town is intentionally esoteric: it's very important to understand that this is by design.
+There are literal towns of agents with a Mayor to manage them,
+a "truth" observer called "The Witness",
+Polecats who actually get things done,
+a god-like entity called the Observer (you) who hands the mayor mandates like
+Moses receiving commandments from Mount Sinai,
+Deacons for periodically telling Polecats to go and actually do their job,
+a Refinery where code can get merged properly as the many agents swarm to add their changes,
+and much more.
+
+But upon using Gas Town, you start to see this vision that Yegge is trying to paint.
+You begin to understand the multi-agent "platform" that he is crafting and telling a story through.
+Like an art installation, Gas Town isn't really meant to be used: it's meant to change how you think.
+
+Let's look briefly at a feature I gave Gas Town to go and implement
+in a large private project I was working on: the code for this isn't really that interesting.
+The process is. At a very high level, a Gas Town workflow involves you giving the Mayor
+something you want done. Then, it'll dispatch all the agent workers to go and get it finished
+eventually producing a code artifact from the Refinery:
+
+![A simplified Gas Town workflow](/content/posts/2026/01-16-a-glimpse/gas-town.png)
+
+---
+
+First, I rigged up the three code bases I knew that the agents would need:
+the core runtime, the admin dashboard, and the public API.
+This effectively clones the repos and adds them to the agent's workspace (the Town).
+
+```sh
+gt rig add core git@github.com:org/core.git
+gt rig add dashboard git@github.com:org/dashboard.git
+gt rig add api git@github.com:org/api.git
+```
+
+Next, I attached to the Mayor session to tell it what I wanted it to do:
+
+```sh
+gt mayor attach
+```
+
+```text
+> Inspect the public API
+> and implement adding core runtime flags to accounts
+> in the admin dashboard.
+> I should be able to find an account and add a flag for that account.
+```
+
+I knew that the agents would need to do a few things across these different code bases:
+
+- inspect the shape of the public API in the `api` repo (this is where adding
+  runtime flags for accounts actually happens and is supported by a `POST`)
+  and possibly add additional capabilities like a `GET` for fetching all runtime flags.
+- inspect how runtime flags in the `core` repo actually work: these flags are
+  specific to how individual accounts are configured and it's very important
+  context for actually using the API.
+- add the capabilities into the admin dashboard (i.e., understand how the Admin dashboard works,
+  utilize the API, build the UI, implement the feature).
+
+With that in mind, I let it loose!
+
+Using Gas Town, there are moments where you think things have completely gone off the rails:
+at one point, I saw a Deacon scorn a Polecat for not being on task
+resulting in the Polecat throwing away its entire git worktree only to start over.
+The Mayor reported back to me that _"Things have gone poorly"_ when that happened.
+
+But eventually, without any additional prompting, the Mayor reported they had finished.
+I was surprised! I was able to actually get a pretty good result from this large multi-codebase setup:
+looking at the artifacts, I saw that
+a Polecat had opened a PR on the dashboard repo in GitHub, my team reviewed it, and we merged it through.
+
+---
+
+It's very easy to look at Gas Town and blow it off as some fever dream,
+something that no serious engineer or organization would actually approve of using.
+It's confusing, expensive, unsafe, and impractical.
+Further, you can probably get similar results by having a few tabs of Claude Code open
+and managing the context yourself.
+
+But if we look at Gas Town not as a tool but a glimpse into the future, we start to
+see a very different story.
+
+A story that tells us there's a multi-agent future where coding, working, and delegating tasks looks
+wildly different from how it does today: hence its esoteric nature and naming.
+It's much easier to tell an almost whimsical story about the future using Mayors, Towns, truth seekers, and gardens
+vs. workers, orchestrators, and merge queues.
+
+Gas Town shows us that with a bit of bubble gum and duct tape (where all products, services,
+and infrastructure start!), you can get quite far orchestrating multiple agents
+to go and do large ambiguous tasks all while their context is being managed autonomously.
+Let's not forget that just over a year ago Claude Code was first being released to the public!
+And practical, working multi-agent setups seemed infinitely far away!!
+Just getting single agent systems to work was a miracle!
+Yet, here we are, despite how expensive it is, with a working multi-agent setup I can run locally!
+
+The true innovation of Gas Town is that it takes what coding agents do really well, extends them,
+and wrangles the necessary pieces for them to work together at the same time:
+it bootstraps all the files, metadata, and repos for agents automatically
+(which unsurprisingly reminds me _a lot_ of `brazil`, the internal Amazon build and code management tool
+that handles nearly all software dependencies within the company).
+It also orchestrates the agent context and task management automatically through `beads`,
+Yegge's SQLite agentic task tracker.
+All this without much human intervention.
+
+It's no surprise that Yegge picked the name Gas Town,
+a dystopian fictional place in the Mad Max universe where crude oil is turned
+to gas for vehicles and war machines.
+Essentially the only infrastructure remaining in a total wasteland.
+
+If Gas Town convinces me of anything, it's that we're drastically lacking any
+kind of system for safety, governance, durability, compliance, or observability.
+Just like the lack of infrastructure in the Mad Max dystopia,
+Gas Town expects you to utilize its orchestration without a care for what's happening, all run in Claude Code "unsafe" mode.
+It's clear that multi-agent systems and orchestrators are right around the corner:
+but what happens when we don't have the necessary telemetry, tools, or infrastructure to
+understand _why_ these agents went off to do what they did?
+Furthermore, running Gas Town outside of a sandbox (which seems to be the way most people run it)
+opens your entire system up to potentially catastrophic consequences.
+
+Ungoverned agent orchestration is a leaky abstraction.
+Any tool calls, file reads, reasoning blocks, or tasks completed by the agent are lost to the ether:
+
+![Ungoverned Agent Orchestration](/content/posts/2026/01-16-a-glimpse/ungoverned-orchestration.png)
+
+In reality, this is not really a multi-agent problem: we've yet to have good tooling for
+safely running, understanding, or governing single-threaded agents.
+
+Gas Town just amplifies the problem.
+
+It's all fun and games when my Polecat nukes its own git worktree, but in the future, in a real
+production setting, when a multi-agent system, let alone a single agent system,
+decides to do something catastrophic that the original prompter did not foresee,
+what systems will be in place to monitor, understand, or catch the _what_ and the _why_?
+
+Gas Town is a glimpse into the future: a dark, grim future where we are still catching
+up on the tooling and infrastructure to support multi-agent workflows.
+With Gas Town, Yegge is showing us that the “platform” of multi-agent workloads and orchestration is nearly here.
+And without the tooling, observability, infrastructure, and services to handle that platform,
+bolting it on after the fact will be extremely painful.
+
+![Governed Agent Orchestration](/content/posts/2026/01-16-a-glimpse/governed-orchestration.png)
+
+The multi-agent platform is nearly here. The infrastructure isn't.
+
+I plan to continue exploring agent telemetry, infrastructure, and tooling in my writing,
+so follow along here or on [Bluesky](https://bsky.app/profile/johncodes.com). Much more to come.
