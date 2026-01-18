@@ -1,0 +1,613 @@
+---
+interface Props {
+  postUrl: string;
+}
+
+const { postUrl } = Astro.props;
+
+// Convert bsky.app URL to AT URI for the API
+// https://bsky.app/profile/johncodes.com/post/3mcmzbh7akk24
+// -> at://johncodes.com/app.bsky.feed.post/3mcmzbh7akk24
+function urlToAtUri(url: string): string | null {
+  const match = url.match(
+    /https?:\/\/bsky\.app\/profile\/([^/]+)\/post\/([^/]+)/,
+  );
+  if (match) {
+    const [, handle, rkey] = match;
+    return `at://${handle}/app.bsky.feed.post/${rkey}`;
+  }
+  return null;
+}
+
+const atUri = urlToAtUri(postUrl);
+---
+
+{
+  atUri && (
+    <div class="bluesky-comments">
+      <hr />
+      <h2>Comments</h2>
+      <div id="bsky-comments" data-uri={atUri} data-post-url={postUrl}>
+        <p class="loading">Loading comments...</p>
+      </div>
+    </div>
+  )
+}
+
+<script>
+  interface Author {
+    did: string;
+    handle: string;
+    displayName?: string;
+    avatar?: string;
+  }
+
+  interface FacetFeature {
+    $type: string;
+    uri?: string; // for links
+    did?: string; // for mentions
+    tag?: string; // for hashtags
+  }
+
+  interface Facet {
+    index: { byteStart: number; byteEnd: number };
+    features: FacetFeature[];
+  }
+
+  interface Comment {
+    uri: string;
+    cid: string;
+    author: Author;
+    text: string;
+    facets?: Facet[];
+    createdAt: string;
+    likeCount: number;
+    replyCount: number;
+    repostCount: number;
+    replies: Comment[];
+  }
+
+  interface ThreadViewPost {
+    $type: string;
+    post: {
+      uri: string;
+      cid: string;
+      author: Author;
+      record: { text: string; createdAt: string; facets?: Facet[] };
+      likeCount?: number;
+      replyCount?: number;
+      repostCount?: number;
+    };
+    replies?: ThreadViewPost[];
+  }
+
+  function isThreadViewPost(v: unknown): v is ThreadViewPost {
+    return (
+      typeof v === "object" &&
+      v !== null &&
+      "$type" in v &&
+      (v as ThreadViewPost).$type === "app.bsky.feed.defs#threadViewPost"
+    );
+  }
+
+  function parseThread(thread: ThreadViewPost): Comment | null {
+    if (!isThreadViewPost(thread)) return null;
+
+    const post = thread.post;
+    const record = post.record;
+
+    const replies: Comment[] = [];
+    if (thread.replies) {
+      for (const reply of thread.replies) {
+        if (isThreadViewPost(reply)) {
+          const parsed = parseThread(reply);
+          if (parsed) replies.push(parsed);
+        }
+      }
+      // Sort replies by like count (most liked first), then by date
+      replies.sort((a, b) => {
+        if (b.likeCount !== a.likeCount) return b.likeCount - a.likeCount;
+        return (
+          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+        );
+      });
+    }
+
+    return {
+      uri: post.uri,
+      cid: post.cid,
+      author: {
+        did: post.author.did,
+        handle: post.author.handle,
+        displayName: post.author.displayName,
+        avatar: post.author.avatar,
+      },
+      text: record.text,
+      facets: record.facets,
+      createdAt: record.createdAt,
+      likeCount: post.likeCount ?? 0,
+      replyCount: post.replyCount ?? 0,
+      repostCount: post.repostCount ?? 0,
+      replies,
+    };
+  }
+
+  function atUriToWebUrl(uri: string): string {
+    const match = uri.match(/at:\/\/([^/]+)\/app\.bsky\.feed\.post\/(.+)/);
+    if (match) {
+      const [, did, rkey] = match;
+      return `https://bsky.app/profile/${did}/post/${rkey}`;
+    }
+    return "#";
+  }
+
+  function formatRelativeTime(dateString: string): string {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffMs = now.getTime() - date.getTime();
+    const diffSecs = Math.floor(diffMs / 1000);
+    const diffMins = Math.floor(diffSecs / 60);
+    const diffHours = Math.floor(diffMins / 60);
+    const diffDays = Math.floor(diffHours / 24);
+
+    if (diffDays > 7) {
+      return date.toLocaleDateString();
+    } else if (diffDays > 0) {
+      return `${diffDays}d ago`;
+    } else if (diffHours > 0) {
+      return `${diffHours}h ago`;
+    } else if (diffMins > 0) {
+      return `${diffMins}m ago`;
+    } else {
+      return "just now";
+    }
+  }
+
+  function escapeHtml(text: string): string {
+    const div = document.createElement("div");
+    div.textContent = text;
+    return div.innerHTML;
+  }
+
+  // Render text with facets (links, mentions, hashtags)
+  function renderTextWithFacets(text: string, facets?: Facet[]): string {
+    if (!facets || facets.length === 0) {
+      return escapeHtml(text);
+    }
+
+    // Convert string to UTF-8 bytes for proper indexing
+    const encoder = new TextEncoder();
+    const decoder = new TextDecoder();
+    const bytes = encoder.encode(text);
+
+    // Sort facets by start index
+    const sortedFacets = [...facets].sort(
+      (a, b) => a.index.byteStart - b.index.byteStart,
+    );
+
+    let result = "";
+    let lastIndex = 0;
+
+    for (const facet of sortedFacets) {
+      const { byteStart, byteEnd } = facet.index;
+
+      // Add text before this facet
+      if (byteStart > lastIndex) {
+        const beforeText = decoder.decode(bytes.slice(lastIndex, byteStart));
+        result += escapeHtml(beforeText);
+      }
+
+      // Get the text for this facet
+      const facetText = decoder.decode(bytes.slice(byteStart, byteEnd));
+      const feature = facet.features[0];
+
+      if (feature) {
+        if (feature.$type === "app.bsky.richtext.facet#link" && feature.uri) {
+          result += `<a href="${escapeHtml(feature.uri)}" target="_blank" rel="noopener" class="comment-link">${escapeHtml(facetText)}</a>`;
+        } else if (
+          feature.$type === "app.bsky.richtext.facet#mention" &&
+          feature.did
+        ) {
+          result += `<a href="https://bsky.app/profile/${escapeHtml(feature.did)}" target="_blank" rel="noopener" class="comment-mention">${escapeHtml(facetText)}</a>`;
+        } else if (
+          feature.$type === "app.bsky.richtext.facet#tag" &&
+          feature.tag
+        ) {
+          result += `<a href="https://bsky.app/hashtag/${escapeHtml(feature.tag)}" target="_blank" rel="noopener" class="comment-hashtag">${escapeHtml(facetText)}</a>`;
+        } else {
+          result += escapeHtml(facetText);
+        }
+      } else {
+        result += escapeHtml(facetText);
+      }
+
+      lastIndex = byteEnd;
+    }
+
+    // Add remaining text after last facet
+    if (lastIndex < bytes.length) {
+      const afterText = decoder.decode(bytes.slice(lastIndex));
+      result += escapeHtml(afterText);
+    }
+
+    return result;
+  }
+
+  function renderComment(comment: Comment, depth: number = 0): string {
+    const maxDepth = 2; // 0, 1, 2 = 3 levels total
+    const authorUrl = `https://bsky.app/profile/${comment.author.handle}`;
+    const commentUrl = atUriToWebUrl(comment.uri);
+    const displayName =
+      comment.author.displayName || `@${comment.author.handle}`;
+    const initial = displayName.charAt(0).toUpperCase();
+    const relativeTime = formatRelativeTime(comment.createdAt);
+
+    const avatarHtml = comment.author.avatar
+      ? `<img src="${comment.author.avatar}" alt="${displayName}" class="avatar" loading="lazy" />`
+      : `<div class="avatar avatar-placeholder">${initial}</div>`;
+
+    // Build stats with icons
+    const statsItems: string[] = [];
+    if (comment.likeCount > 0) {
+      statsItems.push(
+        `<span class="stat-item"><i class="fas fa-heart"></i> ${comment.likeCount}</span>`,
+      );
+    }
+    if (comment.repostCount > 0) {
+      statsItems.push(
+        `<span class="stat-item"><i class="fas fa-retweet"></i> ${comment.repostCount}</span>`,
+      );
+    }
+    if (comment.replyCount > 0) {
+      statsItems.push(
+        `<span class="stat-item"><i class="fas fa-comment"></i> ${comment.replyCount}</span>`,
+      );
+    }
+    const statsHtml =
+      statsItems.length > 0
+        ? `<div class="comment-stats">${statsItems.join("")}</div>`
+        : "";
+
+    // Build replies
+    let repliesHtml = "";
+    if (comment.replies.length > 0) {
+      if (depth < maxDepth) {
+        const nestedReplies = comment.replies
+          .map((r) => renderComment(r, depth + 1))
+          .join("");
+        repliesHtml = `<div class="replies">${nestedReplies}</div>`;
+      } else {
+        // At max depth, show link to continue conversation
+        const firstReplyUrl = atUriToWebUrl(comment.replies[0].uri);
+        const replyCount = comment.replies.length;
+        repliesHtml = `
+          <a href="${firstReplyUrl}" target="_blank" rel="noopener" class="continue-thread">
+            <i class="fas fa-arrow-right"></i> Continue thread (${replyCount} more ${replyCount === 1 ? "reply" : "replies"})
+          </a>
+        `;
+      }
+    }
+
+    return `
+      <div class="comment depth-${depth}">
+        <div class="comment-left">
+          <a href="${authorUrl}" target="_blank" rel="noopener" class="avatar-link">
+            ${avatarHtml}
+          </a>
+          ${comment.replies.length > 0 && depth < maxDepth ? '<div class="thread-line"></div>' : ""}
+        </div>
+        <div class="comment-right">
+          <div class="comment-header">
+            <a href="${authorUrl}" target="_blank" rel="noopener" class="author-name">${displayName}</a>
+            ${comment.author.displayName ? `<span class="author-handle">@${comment.author.handle}</span>` : ""}
+            <span class="comment-dot">·</span>
+            <a href="${commentUrl}" target="_blank" rel="noopener" class="comment-time">${relativeTime}</a>
+          </div>
+          <p class="comment-text">${renderTextWithFacets(comment.text, comment.facets)}</p>
+          ${statsHtml}
+          ${repliesHtml}
+        </div>
+      </div>
+    `;
+  }
+
+  async function loadComments() {
+    const container = document.getElementById("bsky-comments");
+    if (!container) return;
+
+    const uri = container.dataset.uri;
+    const postUrl = container.dataset.postUrl;
+
+    if (!uri) {
+      container.innerHTML = "<p>Invalid Bluesky post URL.</p>";
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `https://public.api.bsky.app/xrpc/app.bsky.feed.getPostThread?uri=${encodeURIComponent(uri)}&depth=6`,
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch comments");
+      }
+
+      const data = await response.json();
+      const thread = parseThread(data.thread);
+
+      if (!thread) {
+        container.innerHTML = `
+          <p class="no-comments">Could not load comments.</p>
+          <a href="${postUrl}" target="_blank" rel="noopener" class="bsky-link">View on Bluesky</a>
+        `;
+        return;
+      }
+
+      if (thread.replies.length === 0) {
+        container.innerHTML = `
+          <div class="thread-stats">
+            <span class="stat-item"><i class="fas fa-heart"></i> ${thread.likeCount}</span>
+            <span class="stat-item"><i class="fas fa-retweet"></i> ${thread.repostCount}</span>
+            <span class="stat-item"><i class="fas fa-comment"></i> 0</span>
+            <a href="${postUrl}" target="_blank" rel="noopener" class="bsky-link"><i class="fab fa-bluesky"></i> Reply on Bluesky</a>
+          </div>
+          <p class="no-comments">No comments yet. Be the first to reply!</p>
+        `;
+        return;
+      }
+
+      const statsHtml = `
+        <div class="thread-stats">
+          <span class="stat-item"><i class="fas fa-heart"></i> ${thread.likeCount}</span>
+          <span class="stat-item"><i class="fas fa-retweet"></i> ${thread.repostCount}</span>
+          <span class="stat-item"><i class="fas fa-comment"></i> ${thread.replyCount}</span>
+          <a href="${postUrl}" target="_blank" rel="noopener" class="bsky-link"><i class="fab fa-bluesky"></i> Reply on Bluesky</a>
+        </div>
+      `;
+
+      const commentsHtml = thread.replies
+        .map((r) => renderComment(r, 0))
+        .join("");
+      container.innerHTML =
+        statsHtml + `<div class="comments-list">${commentsHtml}</div>`;
+    } catch (error) {
+      console.error("Error loading Bluesky comments:", error);
+      container.innerHTML = `
+        <p class="no-comments">Could not load comments.</p>
+        <a href="${postUrl}" target="_blank" rel="noopener" class="bsky-link">View on Bluesky</a>
+      `;
+    }
+  }
+
+  // Load comments when DOM is ready
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", loadComments);
+  } else {
+    loadComments();
+  }
+</script>
+
+<style>
+  .bluesky-comments {
+    margin-top: 3rem;
+  }
+
+  .bluesky-comments h2 {
+    margin-bottom: 1rem;
+  }
+
+  .loading {
+    color: var(--text-secondary);
+  }
+</style>
+
+<style is:global>
+  /* Styles for dynamically rendered comment content */
+  #bsky-comments .thread-stats {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  #bsky-comments .thread-stats .bsky-link {
+    margin-left: auto;
+  }
+
+  #bsky-comments .stat-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  #bsky-comments .stat-item i {
+    font-size: 0.85em;
+  }
+
+  #bsky-comments .bsky-link {
+    color: var(--link);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  #bsky-comments .comments-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Comment structure */
+  #bsky-comments .comment {
+    display: flex;
+    gap: 0.75rem;
+  }
+
+  #bsky-comments .comment.depth-0 {
+    margin-bottom: 1.25rem;
+  }
+
+  #bsky-comments .comment-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+    width: 36px;
+  }
+
+  #bsky-comments .depth-1 .comment-left,
+  #bsky-comments .depth-2 .comment-left {
+    width: 28px;
+  }
+
+  #bsky-comments .avatar-link {
+    flex-shrink: 0;
+    line-height: 0;
+  }
+
+  #bsky-comments .avatar {
+    width: 36px !important;
+    height: 36px !important;
+    max-width: 36px !important;
+    border-radius: 50% !important;
+    object-fit: cover;
+  }
+
+  #bsky-comments .depth-1 .avatar,
+  #bsky-comments .depth-2 .avatar {
+    width: 28px !important;
+    height: 28px !important;
+    max-width: 28px !important;
+  }
+
+  #bsky-comments .avatar-placeholder {
+    width: 36px;
+    height: 36px;
+    background-color: var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    border-radius: 50%;
+  }
+
+  #bsky-comments .depth-1 .avatar-placeholder,
+  #bsky-comments .depth-2 .avatar-placeholder {
+    width: 28px;
+    height: 28px;
+    font-size: 0.75rem;
+  }
+
+  /* Thread line connecting replies */
+  #bsky-comments .thread-line {
+    width: 2px;
+    flex-grow: 1;
+    background-color: var(--border);
+    margin-top: 0.5rem;
+    border-radius: 1px;
+  }
+
+  #bsky-comments .comment-right {
+    flex: 1;
+    min-width: 0;
+    padding-bottom: 0.75rem;
+  }
+
+  #bsky-comments .comment-header {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    font-size: 0.9rem;
+    line-height: 1.3;
+  }
+
+  #bsky-comments .author-name {
+    font-weight: 600;
+    color: var(--text-main);
+  }
+
+  #bsky-comments .author-name:hover {
+    text-decoration: underline;
+  }
+
+  #bsky-comments .author-handle {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+  }
+
+  #bsky-comments .comment-dot {
+    color: var(--text-secondary);
+  }
+
+  #bsky-comments .comment-time {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+  }
+
+  #bsky-comments .comment-time:hover {
+    text-decoration: underline;
+  }
+
+  #bsky-comments .comment-text {
+    margin: 0.25rem 0 0.5rem 0;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    line-height: 1.5;
+  }
+
+  #bsky-comments .comment-link,
+  #bsky-comments .comment-mention,
+  #bsky-comments .comment-hashtag {
+    color: var(--link);
+    text-decoration: underline;
+    text-decoration-style: dotted;
+  }
+
+  #bsky-comments .comment-link:hover,
+  #bsky-comments .comment-mention:hover,
+  #bsky-comments .comment-hashtag:hover {
+    text-decoration-style: solid;
+  }
+
+  #bsky-comments .comment-stats {
+    display: flex;
+    gap: 0.75rem;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+  }
+
+  /* Nested replies */
+  #bsky-comments .replies {
+    margin-top: 0.25rem;
+  }
+
+  #bsky-comments .continue-thread {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.85rem;
+    color: var(--link);
+    margin-top: 0.5rem;
+    padding: 0.4rem 0;
+  }
+
+  #bsky-comments .continue-thread:hover {
+    text-decoration: underline;
+  }
+
+  #bsky-comments .continue-thread i {
+    font-size: 0.75em;
+  }
+
+  #bsky-comments .no-comments {
+    color: var(--text-secondary);
+    margin-bottom: 0.75rem;
+  }
+</style>

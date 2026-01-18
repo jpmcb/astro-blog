@@ -1,6 +1,7 @@
 ---
 title: "The software Cambrian explosion."
 pubDate: 2026-01-11
+bskyPost: "https://bsky.app/profile/johncodes.com/post/3mc66437azc2r"
 ---
 
 The Cambrian explosion was a period of time

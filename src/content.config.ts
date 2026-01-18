@@ -16,6 +16,7 @@ const posts = defineCollection({
     isDraft: z.boolean().optional(),
     updatedDate: z.coerce.date().optional(),
     heroImage: z.string().optional(),
+    bskyPost: z.string().optional(),
   }),
 });
 
