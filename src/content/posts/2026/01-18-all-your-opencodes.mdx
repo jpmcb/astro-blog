@@ -1,6 +1,7 @@
 ---
 title: "all your OpenCodes belong to us"
 pubDate: 2026-01-18
+bskyPost: "https://bsky.app/profile/johncodes.com/post/3mcqllnyocs2x"
 ---
 
 Recently, [OpenCode](https://opencode.ai/), a very popular open source AI coding agent,
@@ -147,7 +148,7 @@ injected into the context!
 I suspect that this would take a bit more of a sophisticated attempt to break
 via prompt injection, but this shows that a malicious actor _also_ has the LLM as an
 attack vector!
-A malicious actor could potentially steering the agent to do further damage,
+A malicious actor could potentially steer the agent to do further damage,
 leak sensitive information,
 or get the human operator to approve some sort of undesirable escalation.
 This was exactly how [the `s1ngularity` supply chain attack](https://www.wiz.io/blog/s1ngularity-supply-chain-attack)
@@ -164,7 +165,7 @@ A whole different attack vector!
 [In my post earlier this week on Gas Town](../01-16-a-glimpse-into-the-future),
 the multi-agent orchestration engine from Steve Yegge,
 I came to the ultimate conclusion that we are _**severely**_ lacking in any sort of
-AI agent centric telemetry or audit tooling. 
+AI agent centric telemetry or audit tooling.
 And similarly, anyone who was exploited
 by this OpenCode vulnerability would essentially have zero understanding of how, where, or
 when they were pwned. The infrastructure just isn't there to support
@@ -173,7 +174,7 @@ auditing agents and understanding what they're doing at scale.
 Just to put this in perspective, conservatively,
 thousands and thousands of developers' machines, projects, and companies
 were exposed to this vulnerability with little understanding of the true impact.
-Were secrets from dev machines exfiltrated? 
+Were secrets from dev machines exfiltrated?
 Were cloud resources or environments exposed?
 Was IP leaked?
 Who knows!
@@ -197,7 +198,7 @@ You wouldn't give a random freelancer root AWS keys on day one (if ever),
 but we hand that to AI agents without a second thought.
 
 As agents get better and better and possibly expose us to greater vulnerabilities through prompt injection,
-now is the time for agentic telemetry. Now is the time
+now is the time for agentic telemetry and instrumentation. Now is the time
 to lay down the infrastructure that will enable us to move as fast as we've been moving
 with AI: the alternative is total chaos.
 
