@@ -1,7 +1,7 @@
 ---
 title: "there is no secure ai enclave"
 pubDate: 2026-01-28
-bskyPost: ""
+bskyPost: "https://bsky.app/profile/johncodes.com/post/3mdio5awfcc2y"
 ---
 
 ![There is no secure AI enclave neo](/content/posts/2026/01-28-there-is-no/there-is-no-spoon-bw.png)
