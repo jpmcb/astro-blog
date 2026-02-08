@@ -126,6 +126,14 @@ img {
 
 :not(pre) > code {
   font-family: "Berkeley Mono";
+  font-size: 0.85em;
+  background-color: var(--platinum);
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
+}
+
+:root.dark :not(pre) > code {
+  background-color: var(--gunmetal);
 }
 
 .astro-code {
