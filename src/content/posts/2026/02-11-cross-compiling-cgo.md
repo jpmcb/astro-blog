@@ -38,20 +38,25 @@ func main() {
 # Compile for aarch64 Darwin (i.e., modern M series Macs)
 $ GOOS=darwin GOARCH=arm64 go build -o build main.go
 ```
+
 ```bash
 # Inspect the executable's properties
 $ file build
 ```
+
 ```
 build: Mach-O 64-bit executable arm64
 ```
+
 ```bash
 # next, compile for x86 Linux
 $ GOOS=linux GOARCH=amd64 go build -o build main.go
 ```
+
 ```bash
 $ file build
 ```
+
 ```
 build: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 2.0.0, Go BuildID=UrrhgNXQ0bW0PmB8HDVI/9G607QN6lMeRuNzuDQT4/BvfLE_OUqa-iQ7Hnfz3_/oRw6-Uruwc9MZyDADl-P
 ```
@@ -121,9 +126,11 @@ CC="zig cc -target aarch64-linux-gnu" \
 CXX="zig c++ -target aarch64-linux-gnu" \
 go build -o build main.go
 ```
+
 ```bash
 $ file build
 ```
+
 ```
 build: ELF 64-bit LSB executable, ARM aarch64, version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux-aarch64.so.1, BuildID[sha1]=91ac90bd53405d38a054dcce9e6f5bb76749a074
 ```
@@ -244,7 +251,7 @@ for _, target := range targets {
 }
 ```
 
-The  `outputs` can then be exported from the Dagger container.
+The `outputs` can then be exported from the Dagger container.
 We handle this in `tapes` with a flat makefile and a `build` target.
 Notice that our call to the wrapper `build-relase` then chains into
 `export` to dump the outputs from our build to the local `./build` directory.
@@ -311,11 +318,11 @@ wrangling platform-specific libraries and headers, and stitching it all together
 
 Instead, with Zig and Dagger:
 
-* Zig gives us a single, drop-in CC/CXX compiler that targets any architecture
+- Zig gives us a single, drop-in CC/CXX compiler that targets any architecture
   without installing separate cross-compilation toolchains.
-* Dagger gives us a reproducible, container-based build environment that runs
+- Dagger gives us a reproducible, container-based build environment that runs
   locally and in CI, all written in Go, not abunch of yamls.
-* `osxcross` as a temporary pragmatic workaround for `darwin` targets.
+- `osxcross` as a temporary pragmatic workaround for `darwin` targets.
 
 The result is a build pipeline that's portable and reproducible that let us
 quickly accelerate to release.
