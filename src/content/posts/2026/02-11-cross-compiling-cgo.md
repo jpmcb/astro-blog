@@ -1,19 +1,17 @@
 ---
 title: "Cross compiling CGO with Dagger and Zig"
-pubDate: 2026-02-06
-isDraft: true
-bskyPost: ""
+pubDate: 2026-02-11
 ---
 
 Anyone who's built a substantial Go project that incorporates C code (like `sqlite`)
 knows that cross compiling with `CGO` can be very painful.
-One of native Go's best features is that you can use your system's cross compiler (like XCode's bundled GCC)
-to easily build binaries for whatever system is supported by `go tool dist list` (like `linux/adm64` or `darwin/arm64`).
+One of Go's best native features is that you can use your system's cross compiler (like XCode's bundled gcc)
+to easily build binaries for whatever system is supported by `go tool dist list` (like `linux/amd64` or `darwin/arm64`).
 Typically all you need to do is set the `GOOS` and `GOARCH` env vars during `go build`.
 
 For the purposes of this experiment, let's build a simple Go program that utilizes `net/http`.
 This is effective since native builds of `net/http` use Go's internal DNS resolver
-while compiling with CGO utilizes the system's library resolver (like `resolv` on MacOS):
+while cross-compiled builds utilize the system's library resolver (like `resolv` on macOS):
 
 ```go
 package main
@@ -86,9 +84,9 @@ undefined reference to 'sqlite3'
 ```
 
 On Linux, we'll need to bring in `libsqlite3-dev` for the sqlite libraries as well as
-GCC cross architecture toolchains:
+gcc cross architecture toolchains:
 `gcc-aarch64-linux-gnu` and `libc6-dev-arm64-cross`.
-This lets us target the arm architectures.
+This lets us target arm architectures using the right cross C compiler with `CGO_ENABLED` turned on:
 
 ```bash
 # Cross compile from a x86 Linux machine to aarch64
@@ -100,10 +98,10 @@ go build -o build main.go
 ```
 
 Outside of the cross compiling headache that is managing different gcc toolchains,
-cross compiling this from Linux to MacOS is an entirely different set of problems!
+cross compiling this from Linux to macOS is an entirely different set of problems!
 Now you not only need to manage different gcc toolchains, you need to also consider
 different system libraries that `darwin` targets expect.
-With CGO now a requirement, the Go toolchain will utilize a CC compiler to look for
+With CGO now a requirement, the Go toolchain will utilize a `CC` compiler to look for
 the necessary system libraries and object files, many of which are not available
 on Linux from the XCode or Apple toolchain.
 
@@ -112,11 +110,12 @@ CGO binaries a huge pain: you suddenly need to manage different machines
 with different targets and different libraries on bespoke C toolchains. Yikes!
 
 [**This is the exact issue I faced shipping `tapes`**,](https://github.com/papercomputeco/tapes)
-a new open source project for agentic telemetry and operations.
+a new [open source project for agentic telemetry and operations](../02-09-introducing-tapes).
 Thankfully, with the power of Dagger and Zig, we can accomplish this elegantly and efficiently!
 
-First, let's look at Zig's cross compiling capabilities: if you didn't know,
-Zig has a whole C and C++ compiler that natively cross compiles and can be utilized as the CC and CXX compiler in Go!
+First, let's look at [Zig's cross compiling capabilities](https://ziglang.org/documentation/0.15.2/#Using--target-and--cflags):
+if you didn't know, Zig has a built-in C and C++ compiler that natively cross compiles
+and can be utilized as the `CC` and `CXX` compiler in Go!
 
 ```bash
 CGO_ENABLED=1 \
@@ -149,7 +148,7 @@ Let's look at [our `tapes` Dagger build module](https://github.com/papercomputec
 
 First, let's set the Zig version we'll be using.
 Since Zig is still actively being developed, I anticipate some thrashing
-when we upgrade. Keeping this hard coded for now stabilizes the CC and CXX
+when we upgrade. Keeping this hard coded for now stabilizes the `CC` and `CXX`
 side of the cross compiling:
 
 ```go
@@ -159,7 +158,7 @@ const (
 ```
 
 We can also define the shape of our build targets (with the target OS, target arch,
-target CC compiler, compiler flags to pass through, etc.)
+target `CC` `CXX` compilers, compiler flags to pass through, and linker flags to pass through):
 
 ```go
 type buildTarget struct {
@@ -174,7 +173,7 @@ type buildTarget struct {
 
 From within the Dagger container, before we can get the Zig toolchain,
 we'll need to inspect the architecture of the machine Dagger itself is running on.
-This is peeling back the onion on Dagger _abit_, but at least ensures we _always_
+This is peeling back the onion on Dagger _a bit_, but at least ensures we _always_
 get the right Zig toolchain for the machine we're running `dagger call` on:
 
 ```go
@@ -242,18 +241,36 @@ for _, target := range targets {
         WithEnvVariable("CGO_CFLAGS", target.cgoFlags).
         WithEnvVariable("CGO_LDFLAGS", target.cgoLdFlags).
 
-        // Note: Go LD flags are provided from higher wrapper functions.
-        // This is how we inject build time variables like "version" and
-        // "buildtime"
+        // Note: the LD flags are how we inject build time variables
+        // like "version" and "buildtime"
         WithExec([]string{"go", "build", "-ldflags", ldflags, "-o", path, "./cli/tapes"})
 
     outputs = outputs.WithDirectory(path, build.Directory(path))
 }
+
+return outputs
 ```
 
-The `outputs` can then be exported from the Dagger container.
+We put this all together in a `build-release` Dagger target that can be called
+in the module:
+
+```go
+
+// BuildRelease compiles versioned release binaries with embedded version info
+func (t *Tapes) BuildRelease(
+    ctx context.Context,
+) *dagger.Directory {
+    // Setup container, Zig toolchain, LD flags, etc. etc.
+}
+```
+
+Notice that we return a `*dagger.Directory`: this is the directory of the build artifacts,
+i.e., the `outputs` that we add to during the build.
+
+The directory can then be exported using a chain to `export --path ...` during a call to the `build-release`
+function in the module.
 We handle this in `tapes` with a flat makefile and a `build` target.
-Notice that our call to the wrapper `build-relase` then chains into
+Notice that our call to the wrapper `build-release` then chains into
 `export` to dump the outputs from our build to the local `./build` directory.
 This is essentially how we exfiltrate these out of the container.
 
@@ -267,9 +284,9 @@ build:
         --path ./build
 ```
 
-You'll notice that we don't have `darwin` (i.e., MacOS targets) as a target in the Linux
-builder: as I mentioned before, there's alot of pain trying to cross compile
-to MacOS from a Linux host since Apple doesn't distribute the Xcode or MacOS libs.
+You'll notice that we don't have `darwin` (i.e., macOS targets) as a target in the Linux
+builder: as I mentioned before, there's a lot of pain trying to cross compile
+to macOS from a Linux host since Apple doesn't distribute the Xcode or macOS libs.
 Attempting to cross compile from Linux to a `darwin` target with Zig results in errors like:
 
 ```
@@ -288,12 +305,12 @@ error: unable to find dynamic system library 'resolv' using strategy 'paths_firs
 ! exit code: 1
 ```
 
-where the `resolv` library can't be found - again, remember that using CGO
+where the `resolv` macOS library can't be found - again, remember that cross compiling and using CGO
 with `net/http` forces the system DNS resolver libraries
 which aren't available through Zig's toolchain or in the Linux based build container this is run in.
 
-Thankfully, there are workarounds! We utilized `osxcross`, a Linux and BSD
-MacOS cross-toolchain that provides these bundled in.
+Thankfully, there are workarounds! We utilize `osxcross`, a Linux and BSD
+macOS cross-toolchain that provides these bundled in.
 In a different build container in Dagger, our target then becomes:
 
 ```go
@@ -303,9 +320,9 @@ targets := []buildTarget{
 }
 ```
 
-where `o64-clang` and `o64-clang++` are the CC and CXX compilers provided by `osxcross`.
+where `o64-clang` and `o64-clang++` are the `CC` and `CXX` compilers provided by `osxcross`.
 This isn't the _most_ practical and eventually we'll probably align on running this
-part of the build & release pipeline natively on MacOS.
+part of the build & release pipeline natively on macOS.
 Maybe some day Apple will align with the Linux ecosystem and make their dev SDK available!
 
 There's much much more to this story, and you can [inspect the `tapes` Dagger modules and pipelines](https://github.com/papercomputeco/tapes/tree/main/.dagger)
@@ -313,16 +330,16 @@ for yourself: it's all open source!
 
 To recap: cross compiling a CGO project like `tapes`,
 which requires `sqlite3` and `sqlite-vec`,
-would mean managing separate CC and CXX toolchains per target architecture on a matrix of machines,
+would mean managing separate `CC` and `CXX` toolchains per target architecture on a matrix of machines,
 wrangling platform-specific libraries and headers, and stitching it all together with very brittle CI yamls.
 
 Instead, with Zig and Dagger:
 
-- Zig gives us a single, drop-in CC/CXX compiler that targets any architecture
+- Zig gives us a single, drop-in `CC`/`CXX` compiler that targets any architecture
   without installing separate cross-compilation toolchains.
-- Dagger gives us a reproducible, container-based build environment that runs
-  locally and in CI, all written in Go, not abunch of yamls.
-- `osxcross` as a temporary pragmatic workaround for `darwin` targets.
+- Dagger gives us a reproducible, cached, container-based build environment that runs
+  locally and in CI, all written in Go (not a bunch of yamls).
+- `osxcross` as a temporary pragmatic workaround for `darwin` macOS targets.
 
-The result is a build pipeline that's portable and reproducible that let us
-quickly accelerate to release.
+The result is a build pipeline that's portable and reproducible that lets us
+quickly accelerate development efforts (in CI and locally)!
